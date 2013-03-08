@@ -1,6 +1,9 @@
-.pyc
+*.pyc
 .db
 db_settings.py
 *~
 *#
 *-
+secrets.py
+.elasticbeanstalk/
+.ebextensions/
