@@ -1,5 +1,4 @@
 # Django settings for smartclip project.
-from secrets import *
 import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -13,7 +12,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sm_db',
         'USER': 'sm_user',
-        'PASSWORD': DB_PASSWORD
+        'PASSWORD': 'dummy_pwd',
     }
 }
     
