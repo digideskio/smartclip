@@ -5,6 +5,7 @@ argparse==1.2.1
 dj-database-url==0.2.1
 ipdb==0.7
 ipython==0.13.1
+psycopg2==2.4.6
 requests==1.1.0
 smartfile==2.1-1
 wsgiref==0.1.2
