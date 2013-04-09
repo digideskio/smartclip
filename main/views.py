@@ -1,3 +1,6 @@
+from django.http import HttpResponseRedirect, HttpResponse
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
@@ -8,8 +11,9 @@ from smartclip.secrets import *
 from main.auth import verify_user
 
 
-def home(request):    
-    return render_to_response('main.html',RequestContext(request))
+def home(request):
+    data = {'user': request.user}
+    return render_to_response('main.html',data,RequestContext(request))
 
 def oauth_redirect(request):
     api = OAuthClient(OAUTH_TOKEN, OAUTH_SECRET)
@@ -28,14 +32,23 @@ def authenticate(request):
         return redirect(reverse('oauth_redirect'))
     access_token = api.get_access_token(request_token, verifier=verifier)
     request.session['ACCESS_TOKEN'] = access_token
-    return redirect(reverse('login'))
+    return redirect(reverse('verify_login'))
 
-def login(request):
+def verify_login(request):
     try:
         access_token = request.session.pop('ACCESS_TOKEN')
     except KeyError:
         return redirect(reverse('home'))
-    if verify_user(access_token):
+    user = verify_user(access_token)
+    import ipdb
+    ipdb.set_trace()
+    if user:
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
         return redirect(reverse('feed'))
     else:
         return redirect(reverse('home'))
+
+@login_required
+def feed(request):
+    return HttpResponse('You are logged in!')

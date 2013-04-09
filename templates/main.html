@@ -39,7 +39,11 @@
       <div class="jumbotron">
         <h1>SmartClip</h1>
         <p class="lead">Online bookmarking made simple.</p>
-		<a class="btn btn-large btn-success" href="#">Sign Me Up!</a>
+	{% if user %}
+	<a class="btn btn-large btn-success" href="#">View Your Clips</a>
+	{% else %}
+	<a class="btn btn-large btn-success" href="#">Log In with SmartFile</a>
+	{% endif %}
       </div>
       <hr>
     </section>
