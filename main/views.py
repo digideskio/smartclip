@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect
@@ -40,8 +40,6 @@ def verify_login(request):
     except KeyError:
         return redirect(reverse('home'))
     user = verify_user(access_token)
-    import ipdb
-    ipdb.set_trace()
     if user:
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
@@ -52,3 +50,13 @@ def verify_login(request):
 @login_required
 def feed(request):
     return HttpResponse('You are logged in!')
+
+def logout_user(request):
+    logout(request)
+    return HttpResponse('Logged out')
+
+def check_user(request):
+    if request.user.is_authenticated():
+        return HttpResponse('logged in')
+    else:
+        return HttpResponse('no user')
