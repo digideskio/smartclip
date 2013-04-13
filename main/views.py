@@ -8,6 +8,7 @@ from django.template import RequestContext
 from smartfile import OAuthClient
 
 from smartclip.secrets import *
+from main.models import User, Clipping
 from main.auth import verify_user
 
 
@@ -48,8 +49,14 @@ def verify_login(request):
         return redirect(reverse('home'))
 
 @login_required
-def feed(request):
-    return HttpResponse('You are logged in!')
+def view_clippings(request):
+    clippings = Clipping.objects.filter(user=request.user)
+    data = {'user': request.user, 'clippings': clippings}
+    return render_to_response('view-clips.html',data,RequestContext(request))
+
+@login_required
+def clip_view(request):
+    return HttpResponse('Clip View')
 
 def logout_user(request):
     logout(request)

@@ -12,7 +12,7 @@ urlpatterns = patterns('main.views',
     url(r'^auth/$', 'authenticate', name='authenticate'),
     url(r'^login/$', 'verify_login', name='verify_login'),
     url(r'^logout/$', 'logout_user', name='logout_user'),
-    url(r'^feed/$', 'feed', name='feed'),
+    url(r'^clippings/$', 'view_clippings', name='view_clippings'),
     url(r'^ext/user/$', 'check_user', name='check_user'),
-    (r'^api/', include(v1_api.urls))
+(r'^api/', include(v1_api.urls))
     )

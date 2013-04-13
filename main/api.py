@@ -4,6 +4,7 @@ from tastypie import fields
 from tastypie.resources import ModelResource
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
+from taggit.models import Tag
 from main.models import Clipping
 
 
@@ -69,3 +70,9 @@ class ClippingResource(ModelResource):
         resource_name = 'clipping'
         authentication = CustomAuthentication()
         authorization = UserObjectsOnlyAuthorization()
+
+    def obj_create(self, bundle, **kwargs):
+        return super(ClippingResource, self).obj_create(bundle, user=bundle.request.user)
+
+    def apply_authorization_limits(self, request, object_list):
+        return object_list.filter(user=request.user)

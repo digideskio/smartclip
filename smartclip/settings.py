@@ -9,15 +9,23 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'sm_db',
+#         'USER': 'sm_user',
+#         'PASSWORD': DB_PASSWORD,
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'sm_db',
-        'USER': 'sm_user',
-        'PASSWORD': DB_PASSWORD,
-    }
-}
-    
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'smartclip1',
+        'USER': '',
+        'PASSWORD': ''
+}}
+
 MANAGERS = ADMINS
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
@@ -117,11 +125,12 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'main',
     'taggit',
     'tastypie',
     'south'
-)
+    )
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
