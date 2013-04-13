@@ -46,7 +46,7 @@ def verify_login(request):
     if user:
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
-        return redirect(reverse('feed'))
+        return redirect(reverse('view_clippings'))
     else:
         return redirect(reverse('home'))
 
