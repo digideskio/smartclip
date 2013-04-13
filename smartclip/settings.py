@@ -20,10 +20,12 @@ ADMINS = (
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'smartclip1',
-        'USER': '',
-        'PASSWORD': ''
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'smartclipdb',
+        'USER': 'sm_user',
+        'PASSWORD': DB_PASSWORD,
+        'HOST': 'smartclipdb.c1mcwweis26q.us-east-1.rds.amazonaws.com',
+        'PORT': 3306
 }}
 
 MANAGERS = ADMINS
