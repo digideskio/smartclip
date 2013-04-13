@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
-
+from django.template.defaultfilters import slugify
+import subprocess
 from taggit.managers import TaggableManager
 
 class UserProfile(models.Model):
@@ -13,3 +14,12 @@ class Clipping(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            html_file = open('/tmp/'+slugify(self.title)+'.html', 'w')
+            html_file.write(self.html.encode('utf-8'))
+            subprocess.call(["wkhtmltopdf",'/tmp/'+slugify(self.title)+'.html',
+                             '/tmp/'+slugify(self.title)+'.pdf'])
+            
+        super(Clipping, self).save(*args, **kwargs)

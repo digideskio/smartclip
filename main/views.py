@@ -37,7 +37,7 @@ def authenticate(request):
 
 def verify_login(request):
     try:
-        access_token = request.session.pop('ACCESS_TOKEN')
+        access_token = request.session.get('ACCESS_TOKEN')
     except KeyError:
         return redirect(reverse('home'))
     user = verify_user(access_token)
