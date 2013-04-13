@@ -1,15 +1,17 @@
+import subprocess
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
-
+from django.template.defaultfilters import slugify 
 from smartfile import OAuthClient
 
 from smartclip.secrets import *
+from smartclip.settings import MEDIA_URL
 from main.models import User, Clipping
-from main.auth import verify_user
+from main.auth import verify_user, generate_api
 
 
 def home(request):
@@ -58,6 +60,23 @@ def view_clippings(request):
 def clip_view(request):
     return HttpResponse('Clip View')
 
+@login_required
+def render_documents(request):
+    clip_id = request.GET.get('clip_id')
+    clip = Clipping.objects.get(id=clip_id)
+    html_file = open(MEDIA_URL+slugify(clip.title)+'.html', 'w')
+    html_file.write(clip.html.encode('utf-8'))
+    html_file.close()
+    subprocess.call(["wkhtmltopdf",MEDIA_URL+slugify(clip.title)+'.html',
+                    MEDIA_URL+slugify(clip.title)+'.pdf'])
+
+    api = generate_api(request)
+    api.post('/path/oper/import/', url='http://smartclip.me/'+MEDIA_URL+slugify(clip.title)+'.pdf',
+             dst='/test')
+    api.post('/path/oper/import/', url='http://smartclip.me/'+MEDIA_URL+slugify(clip.title)+'.html',
+             dst='/test')
+    return HttpResponse('rendered documents')
+    
 def logout_user(request):
     logout(request)
     return HttpResponse('Logged out')

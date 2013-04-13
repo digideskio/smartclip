@@ -19,3 +19,12 @@ def verify_user(access_token):
         return user[0]
     except APIError:
         return False
+
+def generate_api(request):
+    access_token = request.session.get('ACCESS_TOKEN')
+    token = access_token[0]
+    secret = access_token[1]
+    return OAuthClient(client_token=OAUTH_TOKEN, client_secret=OAUTH_SECRET,
+                      access_token=token, access_secret = secret)
+
+    

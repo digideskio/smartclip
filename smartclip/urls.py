@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
 from tastypie.api import Api
 from main.api import ClippingResource, UserResource
+from smartclip.settings import *
+from django.conf.urls.static import static
 
 v1_api = Api(api_name='v1')
 v1_api.register(UserResource())
@@ -14,5 +16,6 @@ urlpatterns = patterns('main.views',
     url(r'^logout/$', 'logout_user', name='logout_user'),
     url(r'^clippings/$', 'view_clippings', name='view_clippings'),
     url(r'^ext/user/$', 'check_user', name='check_user'),
-(r'^api/', include(v1_api.urls))
-    )
+    url(r'^ext/render/$', 'render_documents', name='render_documents'),
+    (r'^api/', include(v1_api.urls))
+    )+ static(MEDIA_URL, document_root=MEDIA_ROOT)

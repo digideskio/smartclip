@@ -70,7 +70,8 @@ class ClippingResource(ModelResource):
         resource_name = 'clipping'
         authentication = CustomAuthentication()
         authorization = UserObjectsOnlyAuthorization()
-
+        always_return_data = True
+        
     def obj_create(self, bundle, **kwargs):
         return super(ClippingResource, self).obj_create(bundle, user=bundle.request.user)
 
