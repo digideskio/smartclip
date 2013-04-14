@@ -166,13 +166,18 @@ LOGGING = {
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
-        }
+        },
+        'console':{
+            'level':'INFO',
+            'class':'logging.StreamHandler',
+            'formatter': 'standard'
+        },
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
+        'django': {
+            'handlers':['console', 'logfile'],
             'propagate': True,
+            'level':'WARN',
         },
         'django.db.backends': {
             'handlers': ['console'],
