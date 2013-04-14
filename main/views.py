@@ -9,7 +9,7 @@ from django.template.defaultfilters import slugify
 from smartfile import OAuthClient
 
 from smartclip.secrets import *
-from smartclip.settings import MEDIA_URL
+from smartclip.settings import MEDIA_URL, MEDIA_ROOT
 from main.models import User, Clipping
 from main.auth import verify_user, generate_api
 
