@@ -64,16 +64,16 @@ def clip_view(request):
 def render_documents(request):
     clip_id = request.GET.get('clip_id')
     clip = Clipping.objects.get(id=clip_id)
-    html_file = open(MEDIA_URL+slugify(clip.title)+'.html', 'w')
+    html_file = open(MEDIA_ROOT+slugify(clip.title)+'.html', 'w')
     html_file.write(clip.html.encode('utf-8'))
     html_file.close()
-    subprocess.call(["wkhtmltopdf",MEDIA_URL+slugify(clip.title)+'.html',
-                    MEDIA_URL+slugify(clip.title)+'.pdf'])
+    subprocess.call(["wkhtmltopdf",MEDIA_ROOT+slugify(clip.title)+'.html',
+                    MEDIA_ROOT+slugify(clip.title)+'.pdf'])
 
     api = generate_api(request)
-    api.post('/path/oper/import/', url='http://smartclip.me/'+MEDIA_URL+slugify(clip.title)+'.pdf',
+    api.post('/path/oper/import/', url='http://smartclip.me/'+MEDIA_ROOT+slugify(clip.title)+'.pdf',
              dst='/test')
-    api.post('/path/oper/import/', url='http://smartclip.me/'+MEDIA_URL+slugify(clip.title)+'.html',
+    api.post('/path/oper/import/', url='http://smartclip.me/'+MEDIA_ROOT+slugify(clip.title)+'.html',
              dst='/test')
     return HttpResponse('rendered documents')
     

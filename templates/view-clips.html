@@ -31,8 +31,8 @@
           <a class="brand" href="#">SmartClip</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li><a href="#">Home</a></li>
-              <li class="active"><a href="#about">My Clippings</a></li>
+              <li><a href="{% url home %}">Home</a></li>
+              <li class="active"><a href="{% url view_clippings %}">My Clippings</a></li>
               <li><a href="#contact">Contact</a></li>
 	      <li>You're logged in as: {{user.username}}</li>
             </ul>
