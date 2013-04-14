@@ -142,6 +142,12 @@ INSTALLED_APPS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt' : "%d/%b/%Y %H:%M:%S"
+        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -153,6 +159,14 @@ LOGGING = {
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
         }
+        'logfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/home/ubuntu/web/www.smartclip.me/log/django-log',
+            'maxBytes': 50000,
+            'backupCount': 2,
+            'formatter': 'standard',
+        }
     },
     'loggers': {
         'django.request': {
@@ -160,5 +174,17 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
-    }
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'smartclip': {
+            'handlers': ['console', 'logfile'],
+            'level': 'DEBUG',
+            'formatter': 'standard',
+        },
+
+    },
+        
 }
