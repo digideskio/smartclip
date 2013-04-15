@@ -1,4 +1,6 @@
-import subprocess
+from django.template.loader import get_template
+
+from wkhtmltopdf.utils import wkhtmltopdf
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -64,16 +66,16 @@ def clip_view(request):
 def render_documents(request):
     clip_id = request.GET.get('clip_id')
     clip = Clipping.objects.get(id=clip_id)
-    html_file = open(MEDIA_ROOT+slugify(clip.title)+'.html', 'w')
+    base_path = MEDIA_ROOT + slugify(clip.title)
+    html_file = open(base_path+'.html', 'w')
     html_file.write(clip.html.encode('utf-8'))
+    wkhtmltopdf(pages=[base_path+'.html'], output=base_path+'.pdf')
     html_file.close()
-    subprocess.call(["wkhtmltopdf",MEDIA_ROOT+slugify(clip.title)+'.html',
-                    MEDIA_ROOT+slugify(clip.title)+'.pdf'])
-
+    
     api = generate_api(request)
-    api.post('/path/oper/import/', url='http://smartclip.me/'+MEDIA_ROOT+slugify(clip.title)+'.pdf',
+    api.post('/path/oper/import/', url='http://smartclip.me/'+base_path+'.pdf',
              dst='/test')
-    api.post('/path/oper/import/', url='http://smartclip.me/'+MEDIA_ROOT+slugify(clip.title)+'.html',
+    api.post('/path/oper/import/', url='http://smartclip.me/'+base_path+'.html',
              dst='/test')
     return HttpResponse('rendered documents')
     

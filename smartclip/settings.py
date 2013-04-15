@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'main',
     'taggit',
     'tastypie',
+    'wkhtmltopdf',
     'south'
     )
 
