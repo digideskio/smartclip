@@ -67,15 +67,17 @@ def render_documents(request):
     clip_id = request.GET.get('clip_id')
     clip = Clipping.objects.get(id=clip_id)
     base_path = MEDIA_ROOT + slugify(clip.title)
+    url_path = 'http://smartclip.me' + MEDIA_URL + slugify(clip.title)
+    
     html_file = open(base_path+'.html', 'w')
     html_file.write(clip.html.encode('utf-8'))
     wkhtmltopdf(pages=[base_path+'.html'], output=base_path+'.pdf')
     html_file.close()
     
     api = generate_api(request)
-    api.post('/path/oper/import/', url='http://smartclip.me/'+base_path+'.pdf',
+    api.post('/path/oper/import/', url=url_path+'.pdf',
              dst='/test')
-    api.post('/path/oper/import/', url='http://smartclip.me/'+base_path+'.html',
+    api.post('/path/oper/import/', url=url_path+'.html',
              dst='/test')
     return HttpResponse('rendered documents')
     
