@@ -10,6 +10,8 @@
 
     <!-- Le styles -->
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <link href="{{STATIC_URL}}css/main.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
     <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
     <script src="{{STATIC_URL}}wysihtml5/parser_rules/advanced.js"></script>
@@ -42,7 +44,8 @@
       </div>
     </div>
 
-    <div class="container">
+    <div class="clip-container">
+      <div class="clip-listings">
       <h1>Your Clippings</h1>
       {% for clip in clippings %}
       <div class="clip-listing">
@@ -50,6 +53,10 @@
       Date created: {{clip.date_created|naturaltime}} Last modified: {{clip.date_modified|naturaltime}}
       </div>
       {% endfor %}
+      </div>
+      <div class="clip-viewer">
+      <iframe src="http://www.smartclip.me/media/two-scoops-of-django-best-practices-for-django-15.html"></iframe>
+      </div>
    </div> <!-- /container -->
     <style>
       body {

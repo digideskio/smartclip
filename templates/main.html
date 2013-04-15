@@ -2,37 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>SmartClip | {% block title %}{% endblock %}</title>
+    <title>SmartClip {% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="{{STATIC_URL}}js/clip.js"></script>
-    <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
     <link href="{{STATIC_URL}}css/main.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
+
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
   </head>
 
   <body>
     <section>
-    <div class="container">
-
-      <div class="masthead">
-        <div class="navbar">
-          <div class="navbar-inner">
-            <div class="container">
-              <ul class="nav">
-                <li class="active"><a href="http://twitter.github.com/bootstrap/examples/justified-nav.html#">Home</a></li>
-                <li><a href="">Projects</a></li>
-                <li><a href="">Services</a></li>
-                <li><a href="">Downloads</a></li>
-                <li><a href="">About</a></li>
-                <li><a href="">Contact</a></li>
-              </ul>
-            </div>
-          </div>
-        </div><!-- /.navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="wide-container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="smartclip brand" href="#">SmartClip</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="{% url home %}">Home</a></li>
+              <li><a href="{% url view_clippings %}">My Clippings</a></li>
+              <li><a href="#contact">Contact</a></li>
+	      <li class="user-dropdown"><a href="">You're logged in as: {{user.username}}</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+	  </div>
+	</div>
       </div>
+    </div>
+
+    <div class="container">
 
       <!-- Jumbotron -->
       <div class="jumbotron">
@@ -70,4 +75,10 @@
     </div>
     </footer>
     </div> <!-- /container -->
-</body></html>
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+</body>
+</html>
