@@ -67,7 +67,7 @@ def render_documents(request):
     clip_id = request.GET.get('clip_id')
     clip = Clipping.objects.get(id=clip_id)
     base_path = MEDIA_ROOT + slugify(clip.title)
-    url_path = 'http://smartclip.me' + MEDIA_URL + slugify(clip.title)
+    url_path = 'http://smartclip.me/media/' + slugify(clip.title)
     
     html_file = open(base_path+'.html', 'w')
     html_file.write(clip.html.encode('utf-8'))
