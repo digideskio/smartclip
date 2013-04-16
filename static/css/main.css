@@ -54,9 +54,8 @@
       .clip-listings {
 	  overflow: auto;
 	  float: left;
-	  padding-left: 30px;
 	  height: 800px;;
-	  width: 30%;
+	  width: 35%;
       }
       .clip-viewer {
 	  float: right;
@@ -70,4 +69,7 @@
       }
       .brand {
 	  padding-left: 20px;
+      }
+      .clip-head {
+	  text-align: center;
       }

@@ -47,14 +47,16 @@
 
     <div class="clip-container">
       <div class="clip-listings">
-      <h1>Your Clippings</h1>
+      <h1 class="clip-head">Your Clippings</h1>
       {% if clippings %}
+      <table class="table table-hover">
       {% for clip in clippings %}
-      <div class="clip-listing">
+      <tr class="clip-listing"><td>
       <h4>{{clip.title}}</h4>
       Date created: {{clip.date_created|naturaltime}} Last modified: {{clip.date_modified|naturaltime}}
-      </div>
+      </td></tr>
       {% endfor %}
+      </table>
       {% else %}
       <p class="muted"><italic>You have no clippings yet! Why don't you give the chrome extension a whirl?</italic></p>
       {% endif %}
