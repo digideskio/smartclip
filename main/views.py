@@ -1,3 +1,4 @@
+import codecs
 from StringIO import StringIO
 from django.template.loader import get_template
 from django.template import Context
@@ -77,13 +78,19 @@ def render_documents(request):
     api.post('/path/data/smartclip/html', file=(slugify(clip.title)+'.html',
             StringIO(html.encode('ascii','xmlcharrefreplace'))))
     
-    html_file = open(base_path+'.html', 'w')
-    html_file.write(html.encode('ascii','xmlcharrefreplace'))
-    html_file.close()
-    
+    # html_file = open(base_path+'.html', 'w')
+    # html_file.write(html.encode('ascii','xmlcharrefreplace'))
+    # html_file.close()
+
     wkhtmltopdf(pages=[base_path+'.html'], output=base_path+'.pdf')
-    api.post('/path/data/smartclip/pdf', file=(slugify(clip.title)+'.pdf',
-            codecs.open(base_path+'.pdf', 'rb', encoding='ascii', errors='ignore'))))
+
+    # with open(base_path+'.pdf') as f:
+    #     import ipdb
+    #     ipdb.set_trace()
+    #     lines = '\n'.join(f.readlines())
+    #     lines = str(lines)
+    #     api.post('/path/data/smartclip/pdf', file=(slugify(clip.title)+'.pdf',
+    #                                                StringIO(lines)))
     return HttpResponse('rendered documents')
     
 def logout_user(request):

@@ -20,7 +20,7 @@
 
   </head>
 
-  <body>
+  <body class="view-clips">
 
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -29,14 +29,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
+	    <span class="icon-bar"></span>
           </button>
           <a class="brand" href="#">SmartClip</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li><a href="{% url home %}">Home</a></li>
               <li class="active"><a href="{% url view_clippings %}">My Clippings</a></li>
-              <li><a href="#contact">Contact</a></li>
-	      <li>You're logged in as: {{user.username}}</li>
+              <li><a href="#contact">Get the Chrome Extension!</a></li>
+	      <li><a href="">You're logged in as: {{user.username}}</a></li>
             </ul>
           </div><!--/.nav-collapse -->
 	  </div>
@@ -47,20 +48,24 @@
     <div class="clip-container">
       <div class="clip-listings">
       <h1>Your Clippings</h1>
+      {% if clippings %}
       {% for clip in clippings %}
       <div class="clip-listing">
       <h4>{{clip.title}}</h4>
       Date created: {{clip.date_created|naturaltime}} Last modified: {{clip.date_modified|naturaltime}}
       </div>
       {% endfor %}
+      {% else %}
+      <p class="muted"><italic>You have no clippings yet! Why don't you give the chrome extension a whirl?</italic></p>
+      {% endif %}
       </div>
       <div class="clip-viewer">
-      <iframe src="http://www.smartclip.me/media/two-scoops-of-django-best-practices-for-django-15.html"></iframe>
+      <iframe src="http://smartclip.me/media/white-chocolate-raspberry-cheesecake-recipe-allrecipescom.html"></iframe>
       </div>
    </div> <!-- /container -->
     <style>
       body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        padding-top: 41px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
   </body>
