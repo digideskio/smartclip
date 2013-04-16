@@ -1,5 +1,5 @@
-import codecs
-from StringIO import StringIO
+import os
+from cStringIO import StringIO
 from django.template.loader import get_template
 from django.template import Context
 from wkhtmltopdf.utils import wkhtmltopdf
@@ -69,28 +69,30 @@ def render_documents(request):
     clip_id = request.GET.get('clip_id')
     clip = Clipping.objects.get(id=clip_id)
     base_path = MEDIA_URL + slugify(clip.title)
-    url_path = 'http://smartclip.me/media/' + slugify(clip.title)
+
     template = get_template('pdf_template.html')
     context = Context({'clip_html': clip.html})
     html = template.render(context)    
 
     api = generate_api(request)
     api.post('/path/data/smartclip/html', file=(slugify(clip.title)+'.html',
-            StringIO(html.encode('ascii','xmlcharrefreplace'))))
+            StringIO(html.encode('utf-8'))))
     
-    # html_file = open(base_path+'.html', 'w')
-    # html_file.write(html.encode('ascii','xmlcharrefreplace'))
-    # html_file.close()
+    html_file = open(base_path+'.html', 'w')
+    html_file.write(html.encode('ascii','xmlcharrefreplace'))
+    html_file.close()
 
     wkhtmltopdf(pages=[base_path+'.html'], output=base_path+'.pdf')
 
-    # with open(base_path+'.pdf') as f:
-    #     import ipdb
-    #     ipdb.set_trace()
-    #     lines = '\n'.join(f.readlines())
-    #     lines = str(lines)
-    #     api.post('/path/data/smartclip/pdf', file=(slugify(clip.title)+'.pdf',
-    #                                                StringIO(lines)))
+    with open(base_path+'.pdf') as f:
+        api.post('/path/data/smartclip/pdf', file=(slugify(clip.title)+'.pdf',f))
+
+    if os.path.isfile(base_path+'.pdf'):
+        os.remove(base_path+'.pdf')
+
+    if os.path.isfile(base_path+'.html'):
+        os.remove(base_path+'.html')
+        
     return HttpResponse('rendered documents')
     
 def logout_user(request):
