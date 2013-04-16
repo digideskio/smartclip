@@ -11,6 +11,8 @@ class Clipping(models.Model):
     html = models.TextField()
     title = models.CharField(max_length=200)
     tags = TaggableManager()
+    source_url = models.URLField(blank=True, null=True)
+    text_only = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User)
