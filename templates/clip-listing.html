@@ -1,0 +1,18 @@
+{% load humanize %}
+
+  {% for clip in clippings %}
+  <li class="clip_li">
+    <div class="options">
+      <a id="edit-{{clip.id}}" href="#" title="Edit Clipping"><span class="icon-pencil"></span></a>
+      <a id="show-{{clip.id}}" href="#" title="View Clipping"><span class="icon-eye-open"></span></a>
+      <a id="download-{{clip.id}}" href="http://app.smartfile.com/api/2/path/data/smartclip/pdf/{{clip.title|slugify}}.pdf" target="_blank" title="Download PDF from SmartFile"><span class="icon-leaf"></span></a>
+      <a id="delete-{{clip.id}}" href="#" title="Delete Clipping"><span class="icon-trash"></span></a>
+    </div>
+    <a href="#" class="clip_list_item">
+      <div class="list_item_title">{{clip.title}}</div>
+      <div class="list_item_desc"><b>Date created:</b> {{clip.date_created|naturaltime}} <b>Last modified:</b> {{clip.date_modified|naturaltime}}
+      </div>
+    </a>
+  </li>
+  {% endfor %}
+</ul>

@@ -91,7 +91,8 @@ def form_view(request,clip_id):
                              dst='/smartclip/html/'+title+'.html')
                 except:
                     create_smartfile_docs(request, clip_id)
-            return HttpResponse('Successful Save')
+            return render_to_response('clip-listing.html', {'clippings': [clip_obj]},
+                                      RequestContext(request))
         else:
             return render_to_response('form-template.html', {'form':form, 'clip_id':clip_id},
                                       RequestContext(request))
@@ -99,7 +100,7 @@ def form_view(request,clip_id):
         form = ClippingForm(instance=clip_obj)
         return render_to_response('form-template.html', {'form':form, 'clip_id':clip_id},
                                   RequestContext(request))
-    
+
 def logout_user(request):
     logout(request)
     return HttpResponse('Logged out')

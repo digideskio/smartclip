@@ -17,7 +17,10 @@
 	    type: "DELETE",
 	    complete: function(xhr, errrorText) {
 		if (xhr.status==204) {
-		    $('.statuses').html('Deleted!');
+		    $('.statuses').append('<div class="alert alert-error">Deleted!</div>').fadeOut(2500,
+												 function(){
+												     $('.alert').remove();
+												 });
 		    parent.fadeOut("normal", function() {
 			$(this).remove();
 		    });
@@ -59,13 +62,13 @@
 	    type: "POST",
 	    data: form.serialize(),
 	    success: function(data) {
-		if (data == 'Successful Save') {
-		    form.siblings().show();
-		    form.remove();
-		    $('.statuses').html('<div class="alert alert-success">Saved!</div>').fadeOut(2000,
-											      function(){
-												  $(this).remove();
-											      });
+		if (data.indexOf('<li') != -1) {
+		    $('.statuses').append('<div class="alert alert-success">Saved Successully!</div>').fadeOut(2500,
+												 function(){
+												     $('.alert').remove();
+												 });
+		    form.siblings().remove();
+		    form.replaceWith(data);
 		} else {
 		    form.replaceWith(data);
 		}
