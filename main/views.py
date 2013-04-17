@@ -1,8 +1,3 @@
-import os
-from cStringIO import StringIO
-from django.template.loader import get_template
-from django.template import Context
-from wkhtmltopdf.utils import wkhtmltopdf
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -17,7 +12,7 @@ from smartclip.secrets import *
 from smartclip.settings import MEDIA_URL, MEDIA_ROOT
 from main.models import User, Clipping
 from main.forms import ClippingForm
-from main.auth import verify_user, generate_api
+from main.auth import verify_user, generate_api, create_smartfile_docs
 
 
 def home(request):
@@ -73,40 +68,37 @@ def html_view(request):
 @login_required
 def render_documents(request):
     clip_id = request.GET.get('clip_id')
-    clip = Clipping.objects.get(id=clip_id)
-    base_path = MEDIA_URL + slugify(clip.title)
-
-    template = get_template('pdf_template.html')
-    context = Context({'clip_html': clip.html})
-    html = template.render(context)    
-
-    api = generate_api(request)
-    api.post('/path/data/smartclip/html', file=(slugify(clip.title)+'.html',
-            StringIO(html.encode('utf-8'))))
-    
-    html_file = open(base_path+'.html', 'w')
-    html_file.write(html.encode('ascii','xmlcharrefreplace'))
-    html_file.close()
-
-    wkhtmltopdf(pages=[base_path+'.html'], output=base_path+'.pdf')
-
-    with open(base_path+'.pdf') as f:
-        api.post('/path/data/smartclip/pdf', file=(slugify(clip.title)+'.pdf',f))
-
-    if os.path.isfile(base_path+'.pdf'):
-        os.remove(base_path+'.pdf')
-
-    if os.path.isfile(base_path+'.html'):
-        os.remove(base_path+'.html')
+    create_smartfile_docs(request, clip_id)
         
     return HttpResponse('rendered documents')
 
 @login_required
-def form_view(request):
-    clip_id = request.GET.get('clip_id')
+def form_view(request,clip_id):
     clip_obj = Clipping.objects.get(id=clip_id)
-    form = ClippingForm(instance=clip_obj)
-    return render_to_response('form-template.html', {'form':form}, RequestContext(request))
+    if request.method == "POST":
+        prev_title = slugify(clip_obj.title)
+        form = ClippingForm(instance=clip_obj, data=request.POST)
+        if form.is_valid():
+            form.save()
+
+            title = slugify(clip_obj.title)
+            if title != prev_title:
+                api = generate_api(request)
+                try:
+                    api.post('/path/oper/rename', src='/smartclip/pdf/'+prev_title+'.pdf',
+                             dst='/smartclip/pdf/'+title+'.pdf')
+                    api.post('/path/oper/rename', src='/smartclip/html/'+prev_title+'.html',
+                             dst='/smartclip/html/'+title+'.html')
+                except:
+                    create_smartfile_docs(request, clip_id)
+            return HttpResponse('Successful Save')
+        else:
+            return render_to_response('form-template.html', {'form':form, 'clip_id':clip_id},
+                                      RequestContext(request))
+    else:
+        form = ClippingForm(instance=clip_obj)
+        return render_to_response('form-template.html', {'form':form, 'clip_id':clip_id},
+                                  RequestContext(request))
     
 def logout_user(request):
     logout(request)

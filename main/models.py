@@ -10,7 +10,7 @@ class UserProfile(models.Model):
 class Clipping(models.Model):
     html = models.TextField()
     title = models.CharField(max_length=200)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
     source_url = models.URLField(blank=True, null=True)
     text_only = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True, editable=False)

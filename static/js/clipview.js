@@ -35,10 +35,10 @@
     $(document).on("click", "a[id^='edit']", function(e) {
 	e.preventDefault();
 	var id = $(this).attr('id').split("-")[1];
-	var parent = $(this).parents('.clip-listing');
+	var parent = $(this).parents('.clip-listing')
+	$('#clip-frame').attr("src", "/htmlview/?clip_id="+id);
 	$.ajax({
-	    url: "/formview/",
-	    data: {"clip_id": id},
+	    url: "/formview/"+id,
 	    success: function(data) {
 		parent.children('td').hide();
 		parent.append(data);
@@ -53,7 +53,22 @@
 	form.remove();
     });
 
-    // $(document).on("click", "a[id^='save']", function(e) {
-    // });
+    $(document).on("click", "button[id^='save']", function(e) {
+	e.preventDefault();
+	var id = $(this).attr('id').split("-")[1];
+	var form = $(this).parents('form');
+	$.ajax({
+	    url: "/formview/"+id,
+	    type: "POST",
+	    data: form.serialize(),
+	    success: function(data) {
+		if (data == 'Successful Save') {
+		    $('.statuses').html('Saved!');
+		} else {
+		    form.parent('td').replaceWith(data);
+		}
+	    }
+	});
+    });
 
 }).call(this);
