@@ -126,7 +126,7 @@ div#container div.home_content {
 div#container div.panel_left {
 	display:table-cell;
 	vertical-align:top;
-	width:270px;
+	width:30%;
 	border-right:1px solid gray;
 }
 
@@ -253,4 +253,19 @@ iframe {
 
 div#footer h2 {
 	font-weight:300;
+}
+
+.clear {
+    clear: both;
+}
+
+.sc-controls {
+    margin-left: 115px;
+}
+
+.sc-control-label {
+    float: left;
+    padding-top: 5px;
+    width: 100px;
+    text-align: right;
 }

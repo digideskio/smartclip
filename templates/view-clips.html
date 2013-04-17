@@ -4,10 +4,16 @@
   <head>
     <meta charset="utf-8">
     <link rel="shortcut icon" href="{{STATIC_URL}}img/icon.ico">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <title>Clippings - SmartClip</title>
     <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
     <link href="{{STATIC_URL}}css/style.css" rel="stylesheet">
+    <script src="{{STATIC_URL}}js/clipview.js"></script>
   </head>
   <body>
     <div id="header">
@@ -62,14 +68,14 @@
 	      {% for clip in clippings %}
 	      <li>
 		<div class="options">
-		  <a id="edit-{{clip.id}}" href="#"><span class="icon-pencil"></span></a>
-		  <a id="show-{{clip.id}}" href="#"><span class="icon-eye-open"></span></a>
-		  <a id="download-{{clip.id}}" href="#"<span class="icon-leaf"></span></a>
-		  <a id="delete-{{clip.id}}" href="#"><span class="icon-trash"></span></a>
+		  <a id="edit-{{clip.id}}" href="#" title="Edit Clipping"><span class="icon-pencil"></span></a>
+		  <a id="show-{{clip.id}}" href="#" title="View Clipping"><span class="icon-eye-open"></span></a>
+		  <a id="download-{{clip.id}}" href="http://app.smartfile.com/api/2/path/data/smartclip/pdf/{{clip.title|slugify}}.pdf" target="_blank" title="Download PDF from SmartFile"><span class="icon-leaf"></span></a>
+		  <a id="delete-{{clip.id}}" href="#" title="Delete Clipping"><span class="icon-trash"></span></a>
 		</div>
 		<a href="#" class="clip_list_item">
 		  <div class="list_item_title">{{clip.title}}</div>
-		  <div class="list_item_desc">Date created: {{clip.date_created|naturaltime}} Last modified: {{clip.date_modified|naturaltime}}
+		  <div class="list_item_desc"><b>Date created:</b> {{clip.date_created|naturaltime}} <b>Last modified:</b> {{clip.date_modified|naturaltime}}
 		  </div>
 		</a>
 	      </li>
@@ -84,7 +90,7 @@
 	<div class="panel_right">
 	  <div class="clip_preview">
 	    <div class="clip_preview_content" style="clear:both;">
-	      <iframe class="clip_preview_frame" src="http://wendyslookbook.com">
+	      <iframe id="clip_preview_frame" src="">
 	    </div>
 	  </div>
 	</div> <!-- end panel_right -->

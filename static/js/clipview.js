@@ -9,15 +9,17 @@
     }, '.clip-listing');
 
     $(document).on("click", "a[id^='show']", function(e) {
-	    e.preventDefault();
-	    var id = $(this).attr('id').split("-")[1];
-	    $('#clip-frame').attr("src", "/htmlview/?clip_id="+id);
+	e.preventDefault();
+	var id = $(this).attr('id').split("-")[1];
+	$(this).parents('li').attr("class", "active");
+	$(this).parents('li').siblings().removeClass("active");
+	$('#clip_preview_frame').attr("src", "/htmlview/?clip_id="+id);
     });
 
     $(document).on("click", "a[id^='delete']", function(e) {
 	e.preventDefault();
 	var id = $(this).attr('id').split("-")[1];
-	var parent = $(this).parents('.clip-listing');
+	var parent = $(this).parents('li');
 	$.ajax({
 	    url: "/api/v1/clipping/"+id,
 	    type: "DELETE",
@@ -35,21 +37,24 @@
     $(document).on("click", "a[id^='edit']", function(e) {
 	e.preventDefault();
 	var id = $(this).attr('id').split("-")[1];
-	var parent = $(this).parents('.clip-listing')
-	$('#clip-frame').attr("src", "/htmlview/?clip_id="+id);
+	var parent = $(this).parents('li');
+	parent.attr("class", "active");
+	parent.siblings().removeClass("active");
+	$('#clip_preview_frame').attr("src", "/htmlview/?clip_id="+id);
 	$.ajax({
 	    url: "/formview/"+id,
 	    success: function(data) {
-		parent.children('td').hide();
+		parent.children().hide();
 		parent.append(data);
 	    }
 	});
     });
 
-    $(document).on("click", "a[id^='cancel']", function(e) {
+    $(document).on("click", "button[id^='cancel']", function(e) {
 	e.preventDefault();
-	var form = $(this).parents('td');
-	form.sibling('td').show();
+	var form = $(this).parents('form');
+	var clip_list = $(this).parents('li');
+	clip_list.children().show();
 	form.remove();
     });
 

@@ -1,4 +1,4 @@
-<td><form method="post" class="form-horizontal">
+<form method="post" class="form-horizontal">
   {% csrf_token %}
     {% for hidden in form.hidden_fields %}
         {{ hidden}}
@@ -15,13 +15,14 @@
       {% if field.errors %}
       <span class="label label-important">{{field.errors}}</span>
       {% endif %}
-      <label class="control-label" for="{{field.html_name}}">{{field.label}}</label>
-      <div class="controls">{{field}}</div>
+      <label class="sc-control-label" for="{{field.html_name}}">{{field.label}}</label>
+      <div class="sc-controls">{{field}}</div>
     </div>
     {% endfor %}
     <div class="pull-right">
       <button class="btn btn-info" id="save-{{clip_id}}">Save</button>
-      <button class="btn">Cancel</button>
+      <button class="btn" id="cancel-{{clip_id}}">Cancel</button>
     </div>
+    <div class="clear"></div>
 </form>
-</td>
+
