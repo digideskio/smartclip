@@ -1,0 +1,256 @@
+html {
+	
+}
+
+body {
+	background-color:#3d3d3d;
+}
+
+div {
+	border:0px solid red;
+}
+
+table, tr, td {
+	margin:0px;
+	padding:0px;
+}
+
+ul {
+	list-style: none;
+	margin:0;
+	padding:0;
+}
+
+h3 {
+	padding:0px;
+	font-size:30px;
+	letter-spacing:-1px;
+	display:block;
+	color:#666;
+	margin:20px 0px 15px 0px;
+	font-weight:300;
+}
+
+div#header {
+	background-color:#303030;
+	color:white;
+	min-height: 35px;
+	overflow:hidden;
+	border-bottom:4px solid #46a1da;
+}
+
+div#logo {
+	padding-left:10px;
+	padding-top:3px;
+	display:inline-block;
+	float: left;
+}
+
+div#logo img {
+	height:35px;
+	margin:8px 0px 8px 10px;
+}
+
+div#nav_menu {
+	display:inline-block;
+	margin-left:30px;
+	margin-top: 7px;
+}
+
+div#nav_menu ul {
+	
+}
+
+div#nav_menu ul li {
+	display:inline-block;
+	margin:0px 0px 0px 0px;
+}
+
+div#nav_menu ul li a {
+	color:white;
+	font-weight:300;
+	display:block;
+	border:0px;
+	outline:0px;
+	text-decoration:none;
+	padding:10px 15px;
+}
+
+div#nav_menu ul li a:hover {
+	background-color:#4B4B4B;
+}
+
+div#nav_menu ul li.active a {
+	background-color:#4B4B4B;
+}
+
+div#header_info {
+	float:right;
+	margin:7px 5px 0px 0px;
+}
+
+div#header_info_img {
+	float:left;
+}
+
+div#header_info_img img {
+	height:40px;
+}
+
+div#header_info_name {
+	float:left;
+	margin:10px 10px 0px 10px;
+}
+
+/* -------------------------------------------------------- */
+
+div#container {
+	display:table;
+	width:100%;
+}
+
+div#container div.clipping_content {
+	display:table-row;
+	background-color:white;
+}
+
+div#container div.home_content {
+	text-align:center;
+	margin:70px 0px 70px 0px;
+	color:#ccc;
+}
+
+
+
+
+div#container div.panel_left {
+	display:table-cell;
+	vertical-align:top;
+	width:270px;
+	border-right:1px solid gray;
+}
+
+div#container div.panel_left div.page_header_bg {
+	background-color:#F7DB85;
+	border-bottom:2px dashed #946F21;
+}
+
+div#container div.panel_left h3 {
+	padding:10px 0px 10px 20px;
+	margin:0px;
+	color:#946F21;
+}
+
+div.clip_list {
+	
+}
+
+div.clip_list ul {
+	max-height:700px;
+	overflow-y:auto;
+	overflow-x:none;
+}
+
+div.clip_list ul::-webkit-scrollbar { 
+    display: none;
+}
+
+div.clip_list ul li {
+	position:relative;
+}
+
+div.clip_list ul li:hover .options {
+	display:block;
+}
+
+div.clip_list ul li .options {
+	position:absolute;
+	right:5px;
+	top:5px;
+	display:none;
+}
+
+div.clip_list ul li .options a {
+	margin-right:5px;
+}
+
+div.clip_list ul li a.clip_list_item {
+	display:block;
+	border:0px;
+	outline:0px;
+	text-decoration:none;
+	font-size:13px;
+	color:#557386;
+	background:#f0f6fa;
+	border-left:4px solid #c4d5df;
+	min-height:57px;
+	overflow:hidden;
+}
+
+div.clip_list ul li.active:after {
+	content: '';
+	display: inline-block;
+	border-bottom: 6px solid transparent;
+	border-top: 6px solid transparent;
+	border-left: 6px solid white;
+	position: absolute;
+	top:45%;
+	right:10px;
+}
+
+div.clip_list ul li.active a.clip_list_item {
+	color:#fff;
+	background:#46a1da;
+	text-decoration:none;
+	border-left:4px solid #0c91e5;
+}
+
+div.clip_list ul li.active .options a span {
+	background-image: url("../bootstrap/img/glyphicons-halflings-white.png");
+}
+
+div.clip_list ul li .list_item_title {
+	font-size:12px;
+	padding:8px;
+	padding-bottom:0px;
+	padding-right:107px;
+	font-weight:bold;
+}
+
+div.clip_list ul li .list_item_desc {
+	font-size:10px;
+	padding:8px;
+	padding-top:0px;
+	padding-right:20px;
+	line-height:12px;
+}
+
+div#container div.panel_right {
+	display:table-cell;
+	padding-left:10px;
+}
+
+div.clip_preview {
+	min-height:550px;
+}
+
+div.clip_preview h4 {
+	font-size:24px;
+}
+
+div#footer {
+	padding:8px 20px 5px 20px;
+	font-size:12px;
+	color:#ddd;
+	text-align:center;
+}
+
+iframe {
+    width: 100%;
+    min-height: 550px;
+    border: none;
+}
+
+div#footer h2 {
+	font-weight:300;
+}

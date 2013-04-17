@@ -3,78 +3,96 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>SmartClip</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <link href="{{STATIC_URL}}css/main.css" rel="stylesheet">
-    <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
+    <link rel="shortcut icon" href="{{STATIC_URL}}img/icon.ico">
+    <title>Clippings - SmartClip</title>
     <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
-
-    <script src="{{STATIC_URL}}js/clipview.js"></script>
+    <link href="{{STATIC_URL}}css/style.css" rel="stylesheet">
   </head>
-
-  <body class="view-clips">
-
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="wide-container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-	    <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">SmartClip</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li><a href="{% url home %}">Home</a></li>
-              <li class="active"><a href="{% url view_clippings %}">My Clippings</a></li>
-              <li><a href="#contact">Get the Chrome Extension!</a></li>
-	      <li><a href="">You're logged in as: {{user.username}}</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-	  </div>
+  <body>
+    <div id="header">
+      <div id="logo">
+	<a href="#"><img src="{{STATIC_URL}}img/logo.png" /></a>
+      </div>
+      <div id="header_info">
+	<div id="header_info_img">
+	  <img src="{{STATIC_URL}}img/profile_img.png" />
+	</div>
+	<div id="header_info_name">
+	  {{ user.username }}
+	  <span class="icon-chevron-down icon-white"></span>
 	</div>
       </div>
+      <div id="nav_menu">
+	<ul>
+	  <li class="start">
+	    <a href="#">
+	      <span class="icon-home icon-white"></span> Home
+	    </a>
+	  </li>
+	  <li class="active">
+	    <a href="#">
+	      <span class="icon-picture icon-white"></span> Clippings 
+	    </a>
+	  </li>
+	  <li>
+	    <a href="#">
+	      <img src="{{STATIC_URL}}img/chrome.png" class="icon-chrome">Get the Chrome Extension
+	    </a>
+	  </li>
+	  <li>
+	    <a href="#">
+	      <span class="icon-pencil icon-white"></span> Contact Us
+	    </a>
+	  </li>
+	</ul>
+      </div>
     </div>
-
-    <div class="clip-container">
-      <div class="clip-listings">
-      <h1 class="clip-head">Your Clippings</h1>
-      <div class="statuses"></div>
-      {% if clippings %}
-      <table class="table table-hover">
-      {% for clip in clippings %}
-      <tr class="clip-listing">
-	<td>
-	  <h4>{{clip.title}}</h4>
-	  Date created: {{clip.date_created|naturaltime}} Last modified: {{clip.date_modified|naturaltime}}
-	  <div class="options pull-right" style="display:none;">
-	    <a id="edit-{{clip.id}}" href="#"><img src="{{STATIC_URL}}img/pencil-edit.png" title="Edit Information" class="clip-icon" id="edit-{{clip.id}}"></a>
-	    <a id="show-{{clip.id}}" href="#"><img src="{{STATIC_URL}}img/show.png" title="Show Clipping" class="clip-icon"></a>
-	    <a id="download-{{clip.id}}" href="#"><img src="{{STATIC_URL}}img/leaf.png" title="Download PDF from SmartFile" class="clip-icon" ></a>
-	    <a id="delete-{{clip.id}}" href="#"><img src="{{STATIC_URL}}img/delete.png" title="Delete this Clipping" class="clip-icon" id="delete-{{clip.id}}"></a>
+    
+    <div id="container">
+      <div class="clipping_content">
+	
+	<div class="panel_left">
+	  <div class="page_header_bg">
+	    <h3>Your Clippings</h3>
 	  </div>
-	</td>
-      </tr>
-      {% endfor %}
-      </table>
-      {% else %}
-      <p class="muted"><italic>You have no clippings yet! Why don't you give the chrome extension a whirl?</italic></p>
-      {% endif %}
-      </div>
-      <div class="clip-viewer">
-      <iframe id="clip-frame" src=""></iframe>
-      </div>
-   </div> <!-- /container -->
-    <style>
-      body {
-        padding-top: 41px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
+	  <div class="clip_list">
+	      {% if clippings %}
+	    <ul>
+	      {% for clip in clippings %}
+	      <li>
+		<div class="options">
+		  <a id="edit-{{clip.id}}" href="#"><span class="icon-pencil"></span></a>
+		  <a id="show-{{clip.id}}" href="#"><span class="icon-eye-open"></span></a>
+		  <a id="download-{{clip.id}}" href="#"<span class="icon-leaf"></span></a>
+		  <a id="delete-{{clip.id}}" href="#"><span class="icon-trash"></span></a>
+		</div>
+		<a href="#" class="clip_list_item">
+		  <div class="list_item_title">{{clip.title}}</div>
+		  <div class="list_item_desc">Date created: {{clip.date_created|naturaltime}} Last modified: {{clip.date_modified|naturaltime}}
+		  </div>
+		</a>
+	      </li>
+	      {% endfor %}
+	    </ul>
+	  {% else %}
+	  <p class="muted"><italic>You have no clippings yet! Why don't you give the chrome extension a whirl?</italic></p>
+	  {% endif %}
+	  </div>
+	</div> <!-- end panel_left -->
+	
+	<div class="panel_right">
+	  <div class="clip_preview">
+	    <div class="clip_preview_content" style="clear:both;">
+	      <iframe class="clip_preview_frame" src="http://wendyslookbook.com">
+	    </div>
+	  </div>
+	</div> <!-- end panel_right -->
+	
+      </div> <!-- end inner_container -->
+    </div> <!-- end container -->
+    
+    <div id="footer">  
+    </div>
   </body>
 </html>
