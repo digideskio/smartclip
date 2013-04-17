@@ -15,6 +15,7 @@ urlpatterns = patterns('main.views',
     url(r'^login/$', 'verify_login', name='verify_login'),
     url(r'^logout/$', 'logout_user', name='logout_user'),
     url(r'^clippings/$', 'view_clippings', name='view_clippings'),
+    url(r'^htmlview/$', 'html_view', name='html_view'),
     url(r'^ext/user/$', 'check_user', name='check_user'),
     url(r'^ext/render/$', 'render_documents', name='render_documents'),
     (r'^api/', include(v1_api.urls))

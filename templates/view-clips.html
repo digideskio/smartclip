@@ -8,16 +8,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <!-- Le styles -->
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <link href="{{STATIC_URL}}css/main.css" rel="stylesheet">
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
     <link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
-    <script src="{{STATIC_URL}}wysihtml5/parser_rules/advanced.js"></script>
-    <!-- Library -->
-    <script src="{{STATIC_URL}}wysihtml5/dist/wysihtml5-0.3.0.min.js"></script>
 
+    <script src="{{STATIC_URL}}js/clipview.js"></script>
   </head>
 
   <body class="view-clips">
@@ -48,13 +45,22 @@
     <div class="clip-container">
       <div class="clip-listings">
       <h1 class="clip-head">Your Clippings</h1>
+      <div class="statuses"></div>
       {% if clippings %}
       <table class="table table-hover">
       {% for clip in clippings %}
-      <tr class="clip-listing"><td>
-      <h4>{{clip.title}}</h4>
-      Date created: {{clip.date_created|naturaltime}} Last modified: {{clip.date_modified|naturaltime}}
-      </td></tr>
+      <tr class="clip-listing">
+	<td>
+	  <h4>{{clip.title}}</h4>
+	  Date created: {{clip.date_created|naturaltime}} Last modified: {{clip.date_modified|naturaltime}}
+	  <div class="options pull-right" style="display:none;">
+	    <img src="{{STATIC_URL}}img/pencil-edit.png" title="Edit Information" class="clip-icon" id="edit-{{clip.id}}">
+	    <a id="show-{{clip.id}}" href="#"><img src="{{STATIC_URL}}img/show.png" title="Show Clipping" class="clip-icon"></a>
+	    <a id="download-{{clip.id}}" href="#"><img src="{{STATIC_URL}}img/leaf.png" title="Download PDF from SmartFile" class="clip-icon" ></a>
+	    <a id="delete-{{clip.id}}" href="#"><img src="{{STATIC_URL}}img/delete.png" title="Delete this Clipping" class="clip-icon" id="delete-{{clip.id}}"></a>
+	  </div>
+	</td>
+      </tr>
       {% endfor %}
       </table>
       {% else %}
@@ -62,7 +68,7 @@
       {% endif %}
       </div>
       <div class="clip-viewer">
-      <iframe src="http://app.smartfile.com/api/2/path/data/smartclip/html/two-scoops-of-django-best-practices-for-django-15.html"></iframe>
+      <iframe id="clip-frame" src=""></iframe>
       </div>
    </div> <!-- /container -->
     <style>

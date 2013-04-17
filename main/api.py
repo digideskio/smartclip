@@ -47,12 +47,12 @@ class UserObjectsOnlyAuthorization(Authorization):
 
     def update_detail(self, object_list, bundle):
         return bundle.obj.user == bundle.request.user
-
+ 
     def delete_list(self, object_list, bundle):
-        raise Unauthorized("Sorry, you can't delete this.")
+        return bundle.obj.user == bundle.request.user
 
     def delete_detail(self, object_list, bundle):
-        raise Unauthorized("Sorry, you can't delete this.")
+        return bundle.obj.user == bundle.request.user
 
 
 class UserResource(ModelResource):

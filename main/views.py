@@ -58,11 +58,15 @@ def verify_login(request):
 def view_clippings(request):
     clippings = Clipping.objects.filter(user=request.user)
     data = {'user': request.user, 'clippings': clippings}
-    return render_to_response('view-clips.html',data,RequestContext(request))
+    return render_to_response('view-clips.html', data,
+                              RequestContext(request))
 
 @login_required
-def clip_view(request):
-    return HttpResponse('Clip View')
+def html_view(request):
+    clip_id = request.GET.get('clip_id')
+    clip = Clipping.objects.get(id=clip_id)
+    data = {'clip_html': clip.html}
+    return render_to_response('pdf_template.html', data, RequestContext(request))
 
 @login_required
 def render_documents(request):

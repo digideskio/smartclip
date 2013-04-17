@@ -73,3 +73,9 @@
       .clip-head {
 	  text-align: center;
       }
+      .clip-icon {
+	  padding-right: 5px;
+      }
+      .clip-icon:hover {
+	  cursor: pointer;
+      }
