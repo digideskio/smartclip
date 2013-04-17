@@ -101,6 +101,15 @@ def form_view(request,clip_id):
         return render_to_response('form-template.html', {'form':form, 'clip_id':clip_id},
                                   RequestContext(request))
 
+def pdf_view(request):
+    clip_id = request.GET.get('clip_id')
+    clip_obj = Clipping.objects.get(id=clip_id)
+    api = generate_api(request)
+    pdf = api.get('/path/data/smartclip/pdf', slugify(clip_obj.title)+'.pdf')
+    response = HttpResponse(pdf.read(), mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename='+slugify(clip_obj.title)+'.pdf'
+    return response    
+
 def logout_user(request):
     logout(request)
     return HttpResponse('Logged out')

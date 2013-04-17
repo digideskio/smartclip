@@ -76,4 +76,9 @@
 	});
     });
 
+
+    $(document).on("click", "a[id^='download']", function(e) {
+	var clip_id = $(this).attr('id').split('-')[1];
+	window.open('/pdfview/?clip_id='+clip_id);
+    });
 }).call(this);
