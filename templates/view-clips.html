@@ -54,7 +54,7 @@
 	  <h4>{{clip.title}}</h4>
 	  Date created: {{clip.date_created|naturaltime}} Last modified: {{clip.date_modified|naturaltime}}
 	  <div class="options pull-right" style="display:none;">
-	    <img src="{{STATIC_URL}}img/pencil-edit.png" title="Edit Information" class="clip-icon" id="edit-{{clip.id}}">
+	    <a id="edit-{{clip.id}}" href="#"><img src="{{STATIC_URL}}img/pencil-edit.png" title="Edit Information" class="clip-icon" id="edit-{{clip.id}}"></a>
 	    <a id="show-{{clip.id}}" href="#"><img src="{{STATIC_URL}}img/show.png" title="Show Clipping" class="clip-icon"></a>
 	    <a id="download-{{clip.id}}" href="#"><img src="{{STATIC_URL}}img/leaf.png" title="Download PDF from SmartFile" class="clip-icon" ></a>
 	    <a id="delete-{{clip.id}}" href="#"><img src="{{STATIC_URL}}img/delete.png" title="Delete this Clipping" class="clip-icon" id="delete-{{clip.id}}"></a>

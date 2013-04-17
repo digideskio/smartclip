@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.forms.models import model_to_dict
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.template.defaultfilters import slugify 
@@ -15,6 +16,7 @@ from smartfile import OAuthClient
 from smartclip.secrets import *
 from smartclip.settings import MEDIA_URL, MEDIA_ROOT
 from main.models import User, Clipping
+from main.forms import ClippingForm
 from main.auth import verify_user, generate_api
 
 
@@ -98,6 +100,13 @@ def render_documents(request):
         os.remove(base_path+'.html')
         
     return HttpResponse('rendered documents')
+
+@login_required
+def form_view(request):
+    clip_id = request.GET.get('clip_id')
+    clip_obj = Clipping.objects.get(id=clip_id)
+    form = ClippingForm(instance=clip_obj)
+    return render_to_response('form-template.html', {'form':form}, RequestContext(request))
     
 def logout_user(request):
     logout(request)

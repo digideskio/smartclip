@@ -79,3 +79,6 @@
       .clip-icon:hover {
 	  cursor: pointer;
       }
+      .controls input, .controls textarea {
+	  width: 300px;
+      }
