@@ -11,9 +11,11 @@
   {% endif %}
 
   {% for field in form.visible_fields %}
-    <div class="control-group">
+    <div class="control-group {%if field.errors %}error{% endif %}">
       {% if field.errors %}
-      <span class="label label-important">{{field.errors}}</span>
+	{% for error in field.errors %}
+	{{field.errors}}
+	{% endfor %}
       {% endif %}
       <label class="sc-control-label" for="{{field.html_name}}">{{field.label}}</label>
       <div class="sc-controls">{{field}}</div>

@@ -1,12 +1,4 @@
 (function() {
-    $(document).on({
-	mouseenter: function() {
-	    $(this).find(".options").show();
-	},
-	mouseleave: function() {	
-	    $(this).find(".options").hide();    
-	}
-    }, '.clip-listing');
 
     $(document).on("click", "a[id^='show']", function(e) {
 	e.preventDefault();
@@ -68,9 +60,14 @@
 	    data: form.serialize(),
 	    success: function(data) {
 		if (data == 'Successful Save') {
-		    $('.statuses').html('Saved!');
+		    form.siblings().show();
+		    form.remove();
+		    $('.statuses').html('<div class="alert alert-success">Saved!</div>').fadeOut(2000,
+											      function(){
+												  $(this).remove();
+											      });
 		} else {
-		    form.parent('td').replaceWith(data);
+		    form.replaceWith(data);
 		}
 	    }
 	});

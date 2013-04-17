@@ -4,7 +4,7 @@ html {
 }
 
 body {
-	background-color:#3d3d3d;
+	background-color:#303030;
 	height: 100%;
 	margin: 0;
 }
@@ -111,10 +111,20 @@ div#header_info_name {
 div#container {
 	display:table;
 	width:100%;
+	background-color: #3d3d3d;
+}
+
+.splash-page {
+    padding-bottom: 30px;
 }
 
 .clip_view {
-    height: 90%;
+    height: 92%;
+}
+
+.errorlist li{
+    margin-left: 115px;
+    color: #B94A48;
 }
 
 div#container div.clipping_content {
@@ -128,25 +138,23 @@ div#container div.home_content {
 	color:#ccc;
 }
 
-
-
-
 div#container div.panel_left {
 	display:table-cell;
 	vertical-align:top;
+	background: #F0F6FA;
 	width:30%;
 	border-right:1px solid gray;
 }
 
 div#container div.panel_left div.page_header_bg {
 	background-color:#F7DB85;
-	border-bottom:2px dashed #946F21;
+	border-bottom: 1px dashed #946F21;
 }
 
 div#container div.panel_left h3 {
 	padding:10px 0px 10px 20px;
 	margin:0px;
-	color:#946F21;
+	color:#666;
 }
 
 div.clip_list {
@@ -163,8 +171,12 @@ div.clip_list ul::-webkit-scrollbar {
     display: none;
 }
 
-div.clip_list ul li {
+div.clip_list ul li{
 	position:relative;
+}
+
+.clip_li {
+    border-bottom: 1px solid #c4d5df;
 }
 
 div.clip_list ul li:hover .options {
@@ -218,11 +230,11 @@ div.clip_list ul li.active .options a span {
 }
 
 div.clip_list ul li .list_item_title {
-	font-size:12px;
-	padding:8px;
-	padding-bottom:0px;
-	padding-right:107px;
-	font-weight:bold;
+    font-size: 16px;
+    padding:8px;
+    padding-bottom:0px;
+    padding-right:107px;
+    font-weight:bold;
 }
 
 div.clip_list ul li .list_item_desc {
@@ -248,9 +260,11 @@ div.clip_preview h4 {
 
 div#footer {
 	padding:8px 20px 5px 20px;
-	font-size:12px;
-	color:#ddd;
+	font-size:16px;
+	color:#ccc;
 	text-align:center;
+	background-color: #303030;
+	border-top: 4px solid #ddd;
 }
 
 iframe {
@@ -276,4 +290,8 @@ div#footer h2 {
     padding-top: 5px;
     width: 100px;
     text-align: right;
+}
+
+form {
+    padding: 10px;
 }

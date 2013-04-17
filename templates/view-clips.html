@@ -62,11 +62,12 @@
 	  <div class="page_header_bg">
 	    <h3>Your Clippings</h3>
 	  </div>
+	  <div class="statuses"></div>
 	  <div class="clip_list">
 	      {% if clippings %}
 	    <ul>
 	      {% for clip in clippings %}
-	      <li>
+	      <li class="clip_li">
 		<div class="options">
 		  <a id="edit-{{clip.id}}" href="#" title="Edit Clipping"><span class="icon-pencil"></span></a>
 		  <a id="show-{{clip.id}}" href="#" title="View Clipping"><span class="icon-eye-open"></span></a>
