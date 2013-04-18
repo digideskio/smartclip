@@ -7,7 +7,6 @@
 	<meta name="author" content="">
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="{{STATIC_URL}}js/bootstrap-dropdown.js"></script>
-	<script src="{{STATIC_URL}}js/main.js"></script>
 
 	<link rel="shortcut icon" href="static/img/icon.ico">
 	<title>Home - SmartClip</title>
@@ -39,7 +38,7 @@
 	    
 	    <br><br>
 	    
-	    <span style="font-size:20px;">Online bookmarking made simple.</span>
+	    <span style="font-size:20px;">The smart way to capture the web</span>
 	    
 	    <br><br>
 	    {% if user.is_authenticated %}
@@ -58,15 +57,18 @@
 	    <div class="row-fluid">
 	      <div class="span4">
 		<h2>Clip Anything.</h2>
-		<p>Whether it's for business or pleasure, any images,links, or text from any website with just a click of a button.</p>
-	      </div>
-	      <div class="span4">
-		<h2>View Anywhere.</h2>
-		<p>With SmartClip, you can clip now, read later. Your clippings are available on any device.</p>
+		<p>Clip now, read later. With the SmartClip Google Chrome extension, you can capture text, links, and images seamlessly to your SmartClip account. Gather anything from the web when inspiration hits, whether it's for business or pleasure.
+		<p><a href="https://chrome.google.com/webstore/detail/smartclip/dfinnoojjhjeehmahanjjbcdjpdmepge" target="_blank"><img src="{{STATIC_URL}}img/chrome-store.png"></a></p>
 	      </div>
 	      <div class="span4">
 		<h2>Powered by SmartFile.</h2>
-		<p>SmartFile provides powerful integration to give you control over your data.</p>
+		<p>SmartFile provides powerful integration to give you control over your data. All your clippings are saved automatically to your SmartFile account and available for download as PDF.</p>
+		<p><a class="btn" href="http://www.smartfile.com/" target="_blank">Learn more about SmartFile >></a></p>
+	      </div>
+	      <div class="span4">
+		<h2>View Us On Github!</h2>
+		<p>SmartClip has been lovingly built by two CS students for the SmartFile Bake-Off competiion. It's open source and available online!</p>
+		<p><a class="btn" href="https://github.com/stemchan/smartclip" target="_blank">See the code >></a></p>
 	      </div>
 	    </div>
 	  </div>

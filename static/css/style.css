@@ -161,13 +161,13 @@ div#container div.panel_left h3 {
 }
 
 div.clip_list {
-	
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 92%;
 }
 
 div.clip_list ul {
 	max-height:700px;
-	overflow-y:auto;
-	overflow-x:none;
 }
 
 div.clip_list ul::-webkit-scrollbar { 
@@ -297,4 +297,9 @@ div#footer h2 {
 
 form {
     padding: 10px;
+}
+
+.icon-chrome {
+    padding-right: 4px;
+    padding-top: 1px;
 }
