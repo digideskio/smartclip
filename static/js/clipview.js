@@ -1,6 +1,6 @@
 (function() {
     $(document).ready(function() {
-	$("sortby-newest").click(function(e) {
+	$("#sortby-newest").click(function(e) {
 	    e.preventDefault();
 	    $(".dropdown-toggle").html('Sorting...<span class="caret"></span>');
 	    $.ajax({
