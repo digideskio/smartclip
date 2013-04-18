@@ -152,12 +152,20 @@ div#container div.panel_left {
 div#container div.panel_left div.page_header_bg {
 	background-color:#F7DB85;
 	border-bottom: 1px dashed #946F21;
+	height: 70px;
 }
 
 div#container div.panel_left h3 {
 	padding:10px 0px 10px 20px;
 	margin:0px;
 	color:#666;
+	float: left;
+}
+
+div#container div.panel_left div.btn-group {
+    float: right;
+    margin-right: 20px;
+    margin-top: 15px;
 }
 
 div.clip_list {
@@ -197,7 +205,7 @@ div.clip_list ul li .options a {
 	margin-right:5px;
 }
 
-div.clip_list ul li a.clip_list_item {
+div.clip_list ul li div.clip_list_item {
 	display:block;
 	border:0px;
 	outline:0px;
@@ -221,7 +229,7 @@ div.clip_list ul li.active:after {
 	right:10px;
 }
 
-div.clip_list ul li.active a.clip_list_item {
+div.clip_list ul li.active div.clip_list_item {
 	color:#fff;
 	background:#46a1da;
 	text-decoration:none;

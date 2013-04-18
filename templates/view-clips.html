@@ -13,6 +13,7 @@
     <link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
     <link href="{{STATIC_URL}}css/style.css" rel="stylesheet">
     <script src="{{STATIC_URL}}js/clipview.js"></script>
+    <script src="{{STATIC_URL}}js/bootstrap-dropdown.js"></script>
   </head>
   <body>
     <div id="header">
@@ -60,6 +61,17 @@
 	<div class="panel_left">
 	  <div class="page_header_bg">
 	    <h3>Your Clippings</h3>
+	    <div class="btn-group">
+	      <button class ="btn primary dropdown-toggle" data-toggle="dropdown">
+		Sort By
+		<span class="caret"></span>
+	      </button>
+	      <ul class="dropdown-menu pull-right">
+		<li><a href="#" id="sortby-newest">Newest</a></li>
+		<li><a href="#" id="sortby-oldest">Oldest</a></li>
+		<li><a href="#" id="sortby-title">Title</a></li>
+	      </ul>
+	    </div>
 	  </div>
 	  <div class="statuses">
 	  </div>

@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
-from django.template.defaultfilters import slugify 
 from smartfile import OAuthClient
 
 from smartclip.secrets import *
@@ -83,12 +82,12 @@ def render_documents(request):
 def form_view(request,clip_id):
     clip_obj = Clipping.objects.get(id=clip_id)
     if request.method == "POST":
-        prev_title = slugify(clip_obj.title)
+        prev_title = clip_obj.filename
         form = ClippingForm(instance=clip_obj, data=request.POST)
         if form.is_valid():
             form.save()
             form.save_m2m()
-            title = slugify(clip_obj.title)
+            title = clip_obj.filename
             if title != prev_title:
                 api = generate_api(request)
                 try:
@@ -109,13 +108,21 @@ def form_view(request,clip_id):
                                   RequestContext(request))
 
 @login_required
+def sort_clips(request):
+    sort_key = request.GET.get('sort_key')
+    clippings = Clipping.objects.filter(user=request.user).order_by(sort_key)
+    return render_to_response('clip-listing.html', {'clippings': clippings},
+                                RequestContext(request))
+
+    
+@login_required
 def pdf_view(request):
     clip_id = request.GET.get('clip_id')
     clip_obj = Clipping.objects.get(id=clip_id)
     api = generate_api(request)
-    pdf = api.get('/path/data/smartclip/pdf', slugify(clip_obj.title)+'.pdf')
+    pdf = api.get('/path/data/smartclip/pdf', clip_obj.filename+'.pdf')
     response = HttpResponse(pdf.read(), mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename='+slugify(clip_obj.title)+'.pdf'
+    response['Content-Disposition'] = 'attachment; filename='+clip_obj.filename+'.pdf'
     return response    
 
 def logout_user(request):

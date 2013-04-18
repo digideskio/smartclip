@@ -8,11 +8,14 @@
       <a id="download-{{clip.id}}" href="#" title="Download PDF from SmartFile"><span class="icon-leaf"></span></a>
       <a id="delete-{{clip.id}}" href="#" title="Delete Clipping"><span class="icon-trash"></span></a>
     </div>
-    <a href="#" class="clip_list_item">
+    <div class="clip_list_item">
       <div class="list_item_title">{{clip.title}}</div>
-      <div class="list_item_desc"><b>Date created:</b> {{clip.date_created|naturaltime}} <b>Last modified:</b> {{clip.date_modified|naturaltime}}
+      <div class="list_item_desc">
+	<b>Source URL:</b> <a href="{{clip.source_url}}" target="_blank">{{clip.source_url}}</a><br>
+	<b>Date created:</b> {{clip.date_created|naturaltime}} 
+	<b>Last modified:</b> {{clip.date_modified|naturaltime}}
       </div>
-    </a>
+    </div>
   </li>
   {% endfor %}
 </ul>
