@@ -139,6 +139,9 @@ div#container div.home_content {
 	text-align:center;
 	margin:70px 0px 70px 0px;
 	color:#ccc;
+	margin: 0 auto;
+	height: 450px;
+	width: 900px;
 }
 
 div#container div.panel_left {
@@ -310,4 +313,25 @@ form {
 .icon-chrome {
     padding-right: 4px;
     padding-top: 1px;
+}
+
+
+.sc-brand {
+    margin: 0 auto;
+    margin-top: 95px;
+}
+
+
+.carousel-control.sc {
+    left: -55px;
+    top: 50%;
+}
+
+.carousel-control.sc.right {
+    left: auto;
+    right: -55px;
+}
+
+.carousel-inner {
+    height: 450px;
 }
