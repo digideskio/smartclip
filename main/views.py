@@ -87,7 +87,7 @@ def form_view(request,clip_id):
         form = ClippingForm(instance=clip_obj, data=request.POST)
         if form.is_valid():
             form.save()
-
+            form.save_m2m()
             title = slugify(clip_obj.title)
             if title != prev_title:
                 api = generate_api(request)

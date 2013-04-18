@@ -63,6 +63,7 @@ class UserResource(ModelResource):
 
 
 class ClippingResource(ModelResource):
+    tags = fields.ListField()
     user = fields.ForeignKey(UserResource, 'user')
 
     class Meta:
@@ -71,7 +72,28 @@ class ClippingResource(ModelResource):
         authentication = CustomAuthentication()
         authorization = UserObjectsOnlyAuthorization()
         always_return_data = True
+
+
+    def build_filters(self, filters=None):
+        if filters is None:
+            filters = {}
+            
+        orm_filters = super(ClippingResource, self).build_filters(filters)
+
+        if 'tag' in filters:
+            orm_filters['tags__name__in'] = filters['tag'].split(',')
+        return orm_filters
+    
         
+    def dehydrate_tags(self, bundle):
+        return map(str, bundle.obj.tags.all())
+
+
+    def save_m2m(self, bundle):
+        tags = bundle.data.get('tags', [])
+        bundle.obj.tags.set(*tags)
+        return super(ClippingResource, self).save_m2m(bundle)
+
     def obj_create(self, bundle, **kwargs):
         return super(ClippingResource, self).obj_create(bundle, user=bundle.request.user)
 

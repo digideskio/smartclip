@@ -3,7 +3,7 @@
     $(document).on("click", "a[id^='show']", function(e) {
 	e.preventDefault();
 	var id = $(this).attr('id').split("-")[1];
-	$(this).parents('li').attr("class", "active");
+	$(this).parents('li').attr("class", "clip_li active");
 	$(this).parents('li').siblings().removeClass("active");
 	$('#clip_preview_frame').attr("src", "/htmlview/?clip_id="+id);
     });
@@ -33,7 +33,7 @@
 	e.preventDefault();
 	var id = $(this).attr('id').split("-")[1];
 	var parent = $(this).parents('li');
-	parent.attr("class", "active");
+	parent.attr("class", "clip_li active");
 	parent.siblings().removeClass("active");
 	$('#clip_preview_frame').attr("src", "/htmlview/?clip_id="+id);
 	$.ajax({

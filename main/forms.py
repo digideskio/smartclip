@@ -10,7 +10,8 @@ class ClippingForm(forms.ModelForm):
         instance = super(ClippingForm, self).save(commit=False)
         if self.user:
             instance.user = self.user
-        return instance.save()
+        instance.save()
+        return instance
 
     class Meta:
         model = Clipping
