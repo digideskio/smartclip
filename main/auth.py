@@ -22,10 +22,14 @@ def verify_user(access_token):
                       access_token=token, access_secret = secret)
     try:
         user_dict = api('/whoami')['user']
-        user = User.objects.get_or_create(username=user_dict['username'], 
+        user, created = User.objects.get_or_create(username=user_dict['username'], 
                                           first_name=user_dict['first_name'],
                                           last_name=user_dict['last_name'])
-        return user[0]
+        if created:
+            api.post('/path/oper/mkdir', path='/smartclip')
+            api.post('/path/oper/mkdir', path='/smartclip/html')
+            api.post('/path/oper/mkdir', path='/smartclip/pdf')
+        return user, created
     except APIError:
         return False
 

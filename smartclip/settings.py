@@ -194,3 +194,5 @@ INSTALLED_APPS = (
 #     },
         
 # }
+
+LOGIN_URL = "/oauth-redirect"

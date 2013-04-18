@@ -17,26 +17,26 @@
   <body>
     <div id="header">
       <div id="logo">
-	<a href="#"><img src="{{STATIC_URL}}img/logo.png" /></a>
+	<a href="/"><img src="{{STATIC_URL}}img/logo.png" /></a>
       </div>
       <div id="header_info">
 	<div id="header_info_img">
 	  <img src="{{STATIC_URL}}img/profile_img.png" />
 	</div>
 	<div id="header_info_name">
-	  {{ user.username }}
+	   Logged in as: <b>{{ user.username }}</b>
 	  <span class="icon-chevron-down icon-white"></span>
 	</div>
       </div>
       <div id="nav_menu">
 	<ul>
 	  <li class="start">
-	    <a href="#">
+	    <a href="/">
 	      <span class="icon-home icon-white"></span> Home
 	    </a>
 	  </li>
 	  <li class="active">
-	    <a href="#">
+	    <a href="/clippings">
 	      <span class="icon-picture icon-white"></span> Clippings 
 	    </a>
 	  </li>

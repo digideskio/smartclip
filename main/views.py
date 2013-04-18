@@ -43,14 +43,21 @@ def verify_login(request):
         access_token = request.session.get('ACCESS_TOKEN')
     except KeyError:
         return redirect(reverse('home'))
-    user = verify_user(access_token)
+    user, created = verify_user(access_token)
     if user:
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
-        return redirect(reverse('view_clippings'))
+        if created:
+            return redirect((reverse('get_chrome')))
+        else:
+            return redirect(reverse('view_clippings'))
     else:
         return redirect(reverse('home'))
 
+@login_required
+def get_chrome(request):
+    return HttpResponse('Get Chrome view')
+    
 @login_required
 def view_clippings(request):
     clippings = Clipping.objects.filter(user=request.user)
