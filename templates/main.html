@@ -16,31 +16,23 @@
 	<link href="{{STATIC_URL}}css/style.css" rel="stylesheet">
 </head>
 <body>
-	<script type="text/javascript">
-	  $('.dropdown-toggle').dropdown();
-	</script>
-	<div id="header">
-      {% if user.is_authenticated %}
+  <div id="header">
       <div id="header_info">
-      <ul id="nav">
-	<li>
-	  <div id="header_info_img">
-	    <img src="{{STATIC_URL}}img/profile_img.png" />
-	  </div>
-	  <div id="header_info_name">
-	    Logged in as: <b>{{ user.username }}</b>
-	    <span class="icon-chevron-down icon-white"></span>
-	  </div>
-          <ul>
-            <li><a href="#">Log Out</a></li>
-          </ul>
-	</li>
-      </ul>    
-      </div>
-      {% endif %}
+	{% if logged_out %}
+	<span class="label label-info">You've been logged out.</span>
+	{% endif %}
+	{% if user.is_authenticated %}
+	<div id="header_info_img">
+	  <img src="{{STATIC_URL}}img/profile_img.png" />
 	</div>
-	
-	
+	<div id="header_info_name">
+	   Logged in as: <b>{{ user.username }}</b>
+	   <br><a href="/logout">Logout</a></br>
+	</div>
+      {% endif %}
+      </div>
+  </div>
+		
 	<div id="container">
 	  <div class="home_content">
 	    <img src="{{STATIC_URL}}img/logo.png" style="height:100px;" />

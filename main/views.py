@@ -108,6 +108,7 @@ def form_view(request,clip_id):
         return render_to_response('form-template.html', {'form':form, 'clip_id':clip_id},
                                   RequestContext(request))
 
+@login_required
 def pdf_view(request):
     clip_id = request.GET.get('clip_id')
     clip_obj = Clipping.objects.get(id=clip_id)
@@ -119,7 +120,8 @@ def pdf_view(request):
 
 def logout_user(request):
     logout(request)
-    return HttpResponse('Logged out')
+    data = {'logged_out': True }
+    return render_to_response('main.html', data, RequestContext(request))
 
 def check_user(request):
     if request.user.is_authenticated():
