@@ -1,5 +1,7 @@
 SmartClip
 =========
+
+
 http://www.smartclip.me/
 SmartClip allows you to capture parts of webpages right to your SmartFile account. View your clippings all in one convenient place and download them as PDFs.
 
