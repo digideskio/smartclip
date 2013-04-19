@@ -46,8 +46,6 @@ def create_smartfile_docs(request, clip_id):
     base_path = MEDIA_URL + clip.filename
     
     api = generate_api(request)
-    import ipdb
-    ipdb.set_trace()
     api.post('/path/data/smartclip/html', file=(clip.filename+'.html',
              StringIO(clip.html.encode('utf-8'))))
     
