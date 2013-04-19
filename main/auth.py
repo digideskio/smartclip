@@ -26,9 +26,7 @@ def verify_user(access_token):
                                           first_name=user_dict['first_name'],
                                           last_name=user_dict['last_name'])
         if created:
-            api.post('/path/oper/mkdir', path='/smartclip')
-            api.post('/path/oper/mkdir', path='/smartclip/html')
-            api.post('/path/oper/mkdir', path='/smartclip/pdf')
+            create_smartfile_dirs(api)    
         return user, created
     except APIError:
         return False
@@ -46,6 +44,7 @@ def create_smartfile_docs(request, clip_id):
     base_path = MEDIA_URL + clip.filename
     
     api = generate_api(request)
+    create_smartfile_dirs(api)
     api.post('/path/data/smartclip/html', file=(clip.filename+'.html',
              StringIO(clip.html.encode('utf-8'))))
     
@@ -63,3 +62,18 @@ def create_smartfile_docs(request, clip_id):
 
     if os.path.isfile(base_path+'.html'):
         os.remove(base_path+'.html')
+
+def create_smartfile_dirs(api):
+    try:
+        api.get('/path/info/smartclip')
+    except:
+        api.post('/path/oper/mkdir', path='/smartclip')
+    try:
+        api.get('/path/info/smartclip/html')
+    except:
+        api.post('/path/oper/mkdir', path='/smartclip/html')
+    try:
+        api.get('/path/info/smartclip/pdf')
+    except:
+        api.post('/path/oper/mkdir', path='/smartclip/pdf')
+    

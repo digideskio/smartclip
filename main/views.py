@@ -11,7 +11,7 @@ from smartclip.secrets import *
 from smartclip.settings import MEDIA_URL, MEDIA_ROOT
 from main.models import User, Clipping
 from main.forms import ClippingForm
-from main.auth import verify_user, generate_api, create_smartfile_docs
+from main.auth import verify_user, generate_api, create_smartfile_docs, create_smartfile_dirs
 
 
 def home(request):
@@ -46,10 +46,7 @@ def verify_login(request):
     if user:
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
-        if created:
-            return redirect((reverse('get_chrome')))
-        else:
-            return redirect(reverse('view_clippings'))
+        return redirect(reverse('view_clippings'))
     else:
         return redirect(reverse('home'))
 
@@ -90,6 +87,7 @@ def form_view(request,clip_id):
             title = clip_obj.filename
             if title != prev_title:
                 api = generate_api(request)
+                create_smartfile_dirs(api)
                 try:
                     api.post('/path/oper/rename', src='/smartclip/pdf/'+prev_title+'.pdf',
                              dst='/smartclip/pdf/'+title+'.pdf')
