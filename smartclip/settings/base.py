@@ -1,32 +1,11 @@
 # Django settings for smartclip project.
 import os
-from smartclip.secrets import *
-
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'sm_db',
-#         'USER': 'sm_user',
-#         'PASSWORD': DB_PASSWORD,
-#     }
-# }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'scdb',
-        'USER': 'sc_user',
-        'PASSWORD': DB_PASSWORD,
-        'HOST': 'scinstance.c1mcwweis26q.us-east-1.rds.amazonaws.com',
-        'PORT': 3306
-}}
 
 MANAGERS = ADMINS
 
@@ -76,19 +55,19 @@ STATIC_ROOT = ''
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 
-PATH = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
+PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     PATH + '/static',
-    )
+)
 
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -98,7 +77,7 @@ SECRET_KEY = 'gf34-m))q^y#2$i93jcd0=g73$eb3f99bfa@-+g4c$(=!^1t3z'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -113,12 +92,9 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'smartclip.urls'
 
-# Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'smartclip.wsgi.application'
-
 TEMPLATE_DIRS = (
     PATH + '/templates',
-    )
+)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -133,7 +109,7 @@ INSTALLED_APPS = (
     'tastypie',
     'wkhtmltopdf',
     'south'
-    )
+)
 
 # # A sample logging configuration. The only tangible logging
 # # performed by this configuration is to send an email to
