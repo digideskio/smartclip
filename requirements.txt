@@ -14,5 +14,5 @@ python-dateutil==2.1
 requests==1.1.0
 requests-oauthlib==0.3.0
 six==1.3.0
-smartfile==2.1-1
+git+git://github.com/mattdeboard/client-python.git
 wsgiref==0.1.2
