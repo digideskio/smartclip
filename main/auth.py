@@ -42,7 +42,7 @@ def generate_api(request):
 def create_smartfile_docs(request, clip_id):
     clip = Clipping.objects.get(id=clip_id)
     base_path = MEDIA_URL + clip.filename
-    
+
     api = generate_api(request)
     create_smartfile_dirs(api)
     api.post('/path/data/smartclip/html', file=(clip.filename+'.html',
@@ -55,7 +55,7 @@ def create_smartfile_docs(request, clip_id):
     wkhtmltopdf(pages=[base_path+'.html'], output=base_path+'.pdf')
 
     with open(base_path+'.pdf') as f:
-        api.post('/path/data/smartclip/pdf', file=(slugify(clip.title)+'.pdf',f))
+        api.post('/path/data/smartclip/pdf', file=(clip.filename+'.pdf',f))
 
     if os.path.isfile(base_path+'.pdf'):
         os.remove(base_path+'.pdf')

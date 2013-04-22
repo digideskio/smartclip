@@ -30,7 +30,7 @@ def authenticate(request):
     api = OAuthClient(OAUTH_TOKEN, OAUTH_SECRET)
 
     try:
-        request_token = request.session.pop('REQUEST_TOKEN')
+        request_token = request.session.get('REQUEST_TOKEN')
     except:
         return redirect(reverse('oauth_redirect'))
     access_token = api.get_access_token(request_token, verifier=verifier)
