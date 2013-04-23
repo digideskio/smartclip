@@ -61,10 +61,9 @@
 	var id = $(this).attr('id').split("-")[1];
 	var parent = $(this).parents('li');
 	$.ajax({
-	    url: "/api/v1/clipping/"+id,
-	    type: "DELETE",
-	    complete: function(xhr, errrorText) {
-		if (xhr.status==204) {
+	    url: "/ext/delete/"+id,
+	    success: function(data) {
+		if (data=='deleted') {
 		    $('.statuses').append('<div class="alert alert-error">Deleted!</div>').fadeOut(2500,
 												   function(){
 												       $('.alert').remove();

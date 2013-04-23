@@ -133,3 +133,20 @@ def check_user(request):
         return HttpResponse('logged in')
     else:
         return HttpResponse('no user')
+
+@login_required
+def delete_clipping(request, clip_id):
+    clip = Clipping.objects.get(user=request.user, id=clip_id)
+    if clip:
+        api = generate_api(request)
+        try:
+            api.post('/path/oper/remove',
+                     path='/smartclip/pdf/'+clip.filename+'.pdf')
+            api.post('/path/oper/remove',
+                     path='/smartclip/html/'+clip.filename+'.html')
+        except:
+            pass
+        clip.delete()
+        return HttpResponse('deleted')
+    else:
+        return HttpResponse('not authorized')

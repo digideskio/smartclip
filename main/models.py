@@ -4,6 +4,7 @@ from django.template.defaultfilters import slugify
 import subprocess
 from taggit.managers import TaggableManager
 
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User)    
 

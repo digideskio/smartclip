@@ -21,5 +21,6 @@ urlpatterns = patterns('main.views',
     url(r'^pdfview/$', 'pdf_view', name='pdf_view'),
     url(r'^ext/user/$', 'check_user', name='check_user'),
     url(r'^ext/render/$', 'render_documents', name='render_documents'),
+    url(r'^ext/delete/(?P<clip_id>\d+)$', 'delete_clipping', name='delete_clipping'),
     (r'^api/', include(v1_api.urls))
     )+ static(MEDIA_URL, document_root=MEDIA_ROOT)
