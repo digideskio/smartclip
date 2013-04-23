@@ -1,0 +1,31 @@
+<form method="post" class="form-horizontal">
+  {% csrf_token %}
+    {% for hidden in form.hidden_fields %}
+        {{ hidden}}
+    {% endfor %}
+
+  {% if form.errors %}
+  {% for error in form.non_field_errors %}
+  {{error}}
+  {% endfor %}
+  {% endif %}
+
+  {% for field in form.visible_fields %}
+    <div class="control-group {%if field.errors %}error{% endif %}">
+      {% if field.errors %}
+	{% for error in field.errors %}
+      {{field.errors}}
+      {% endfor %}
+      {% endif %}
+      <label class="sc-control-label" for="{{field.html_name}}">{{field.label}}</label>
+      <div class="sc-controls">{{field}}      <div class="muted">{{field.help_text}}</div>
+</div>
+    </div>
+    {% endfor %}
+    <div class="pull-right">
+      <button class="btn btn-info" id="sharesave-{{clip_id}}">Save</button>
+      <button class="btn" id="cancel-{{clip_id}}">Cancel</button>
+    </div>
+    <div class="clear"></div>
+</form>
+
