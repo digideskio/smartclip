@@ -339,3 +339,12 @@ form {
 .clip_list_item:hover {
     cursor: pointer;
 }
+
+div#container div.panel_left #myModalLabel h3 {
+    float: none;
+}
+
+div.modal-body.modal-sc {
+    height: auto;
+    max-height: none;
+}

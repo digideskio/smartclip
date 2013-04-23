@@ -18,7 +18,8 @@
 	{% endfor %}
       {% endif %}
       <label class="sc-control-label" for="{{field.html_name}}">{{field.label}}</label>
-      <div class="sc-controls">{{field}}</div>
+      <div class="sc-controls">{{field}}      <div class="muted">{{field.help_text}}</div>
+</div>
     </div>
     {% endfor %}
     <div class="pull-right">

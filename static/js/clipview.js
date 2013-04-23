@@ -41,11 +41,11 @@
     });
 
     $(document).on("click", "li[class^='clip_li']", function(e) {
-	e.preventDefault();
-	var id = $(this).find('a[id^="show"]').attr('id').split("-")[1];
-	$(this).attr("class", "clip_li active");
-	$(this).siblings().removeClass("active");
-	$('#clip_preview_frame').attr("src", "/htmlview/?clip_id="+id);
+    	e.preventDefault();
+    	var id = $(this).find('a[id^="show"]').attr('id').split("-")[1];
+    	$(this).attr("class", "clip_li active");
+    	$(this).siblings().removeClass("active");
+    	$('#clip_preview_frame').attr("src", "/htmlview/?clip_id="+id);
     });
 
     $(document).on("click", "a[id^='show']", function(e) {
@@ -64,6 +64,7 @@
 	    url: "/ext/delete/"+id,
 	    success: function(data) {
 		if (data=='deleted') {
+		    $('.statuses').show();
 		    $('.statuses').append('<div class="alert alert-error">Deleted!</div>').fadeOut(2500,
 												   function(){
 												       $('.alert').remove();
@@ -92,6 +93,22 @@
 	});
     });
 
+    $(document).on("click", "a[id^='share']", function(e) {
+    	e.preventDefault();
+    	var id = $(this).attr('id').split("-")[1];
+    	var parent = $(this).parents('li');
+    	parent.attr("class", "clip_li active");
+    	parent.siblings().removeClass("active");
+    	$('#clip_preview_frame').attr("src", "/htmlview/?clip_id="+id);
+    	$.ajax({
+    	    url: "/share/"+id,
+    	    success: function(data) {
+    		$('.modal-body').html(data);
+    	    }
+    	});
+    });
+
+
     $(document).on("click", "button[id^='cancel']", function(e) {
 	e.preventDefault();
 	var form = $(this).parents('form');
@@ -110,12 +127,37 @@
 	    data: form.serialize(),
 	    success: function(data) {
 		if (data.indexOf('<li') != -1) {
+		    $('.statuses').show();
 		    $('.statuses').append('<div class="alert alert-success">Saved Successully!</div>').fadeOut(2500,
 													       function(){
 														   $('.alert').remove();
 													       });
 		    form.siblings().remove();
 		    form.replaceWith(data);
+		} else {
+		    form.replaceWith(data);
+		}
+	    }
+	});
+    });
+
+    $(document).on("click", "button[id^='sharesave']", function(e) {
+	e.preventDefault();
+	var id = $(this).attr('id').split("-")[1];
+	var form = $(this).parents('form');
+	$.ajax({
+	    url: "/share/"+id,
+	    type: "POST",
+	    data: form.serialize(),
+	    success: function(data) {
+		if (data == 'success') {
+		    form.remove();
+		    $('#myModal').modal('hide');
+		    $('.statuses').show();
+		    $('.statuses').append('<div class="alert alert-success">Email Sent!</div>').fadeOut(2500,
+													       function(){
+														   $('.alert').remove();
+													       });
 		} else {
 		    form.replaceWith(data);
 		}

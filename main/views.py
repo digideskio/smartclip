@@ -10,8 +10,8 @@ from smartfile import OAuthClient
 from smartclip.secrets import *
 from smartclip.settings import MEDIA_URL, MEDIA_ROOT
 from main.models import User, Clipping
-from main.forms import ClippingForm
-from main.auth import verify_user, generate_api, create_smartfile_docs, create_smartfile_dirs
+from main.forms import ClippingForm, ShareForm
+from main.auth import verify_user, generate_api, create_smartfile_docs, create_smartfile_dirs, create_link
 
 
 def home(request):
@@ -150,3 +150,28 @@ def delete_clipping(request, clip_id):
         return HttpResponse('deleted')
     else:
         return HttpResponse('not authorized')
+
+@login_required
+def share_form(request, clip_id):
+    clip = Clipping.objects.get(user=request.user, id=clip_id)
+    if clip:
+        if request.method == "POST":
+            form = ShareForm(request.POST)
+            if form.is_valid():
+                api = generate_api(request)
+                resp = create_link(api, clip.filename, **form.cleaned_data)
+                if resp.get('href', None):
+                    return HttpResponse('success')
+                else:
+                    return HttpResponse('failure')
+            else:
+                return render_to_response('share-form.html',
+                                          {'form':form, 'clip_id': clip_id},
+                                          RequestContext(request))
+        else:
+            form = ShareForm()
+            return render_to_response('share-form.html',
+                                  {'form':form, 'clip_id': clip_id},
+                                  RequestContext(request))
+    else:
+        HttpResponse('not authorized')

@@ -77,3 +77,11 @@ def create_smartfile_dirs(api):
     except:
         api.post('/path/oper/mkdir', path='/smartclip/pdf')
     
+def create_link(api, filename, **kwargs):
+    message = kwargs.get('message', None)
+    recipients = kwargs.get('recipients', None)
+    name = kwargs.get('title', None)
+    
+    return api.post('/link', path='/smartclip/pdf/'+filename+'.pdf',
+             name=name, recipients=recipients, message=message,
+             read=True, list=True)
