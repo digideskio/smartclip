@@ -40,6 +40,14 @@
 	});
     });
 
+    $(document).on("click", "li[class^='clip_li']", function(e) {
+	e.preventDefault();
+	var id = $(this).find('a[id^="show"]').attr('id').split("-")[1];
+	$(this).attr("class", "clip_li active");
+	$(this).siblings().removeClass("active");
+	$('#clip_preview_frame').attr("src", "/htmlview/?clip_id="+id);
+    });
+
     $(document).on("click", "a[id^='show']", function(e) {
 	e.preventDefault();
 	var id = $(this).attr('id').split("-")[1];

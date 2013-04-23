@@ -1,7 +1,7 @@
 {% load humanize %}
 
   {% for clip in clippings %}
-  <li class="clip_li">
+  <li class="clip_li-{{clip.id}}">
     <div class="options">
       <a id="edit-{{clip.id}}" href="#" title="Edit Clipping"><span class="icon-pencil"></span></a>
       <a id="show-{{clip.id}}" href="#" title="View Clipping"><span class="icon-eye-open"></span></a>
