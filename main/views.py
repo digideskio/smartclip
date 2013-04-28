@@ -125,10 +125,10 @@ def delete_clipping(request, clip_id):
     if clip:
         api = generate_api(request)
         try:
-            api.post('/path/oper/remove',
-                     path='/smartclip/pdf/'+clip.filename+'.pdf')
-            api.post('/path/oper/remove',
-                     path='/smartclip/html/'+clip.filename+'.html')
+            api.client.post('/path/oper/remove',
+                            path='/smartclip/pdf/'+clip.filename+'.pdf')
+            api.client.post('/path/oper/remove',
+                            path='/smartclip/html/'+clip.filename+'.html')
         except:
             pass
         clip.delete()
