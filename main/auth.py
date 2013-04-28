@@ -27,8 +27,9 @@ def create_smartfile_docs(request, clip_id):
     
     api = generate_api(request)
     create_smartfile_dirs(api)
-    api.post('/path/data/smartclip/html', file=(clip.filename+'.html',
-             StringIO(clip.html.encode('utf-8'))))
+    api.client.post('/path/data/smartclip/html',
+                    file=(clip.filename+'.html',
+                          StringIO(clip.html.encode('utf-8'))))
     
     html_file = open(base_path+'.html', 'w')
     html_file.write(clip.html.encode('ascii','xmlcharrefreplace'))
@@ -37,7 +38,8 @@ def create_smartfile_docs(request, clip_id):
     wkhtmltopdf(pages=[base_path+'.html'], output=base_path+'.pdf')
 
     with open(base_path+'.pdf') as f:
-        api.post('/path/data/smartclip/pdf', file=(clip.filename+'.pdf',f))
+        api.client.post('/path/data/smartclip/pdf',
+                        file=(clip.filename+'.pdf',f))
 
     if os.path.isfile(base_path+'.pdf'):
         os.remove(base_path+'.pdf')
@@ -46,12 +48,7 @@ def create_smartfile_docs(request, clip_id):
         os.remove(base_path+'.html')
 
 def create_smartfile_dirs(api):
-    for ext in ['', 'html', 'pdf']:
-        path = 'smartclip'
-
-        if ext:
-            path = '.'.join([path, ext])
-            
+    for path in ['smartclip', 'smartclip.html', 'smartclip.pdf']:
         try:
             api.client.get('/path/info/%s' % path)
         except:
@@ -63,5 +60,5 @@ def create_link(api, filename, **kwargs):
     name = kwargs.get('title', None)
     
     return api.client.post('/link', path='/smartclip/pdf/'+filename+'.pdf',
-             name=name, recipients=recipients, message=message,
-             read=True, list=True)
+                           name=name, recipients=recipients, message=message,
+                           read=True, list=True)
