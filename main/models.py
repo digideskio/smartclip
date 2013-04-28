@@ -1,12 +1,15 @@
+import subprocess
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
-import subprocess
+
 from taggit.managers import TaggableManager
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)    
+
 
 class Clipping(models.Model):
     html = models.TextField()

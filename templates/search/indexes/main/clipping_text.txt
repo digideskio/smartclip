@@ -1,0 +1,5 @@
+{{ object.html }}
+{{ object.title }}
+{{ object.source_url }}
+{{ object.date_created }}
+{{ object.user.id }}
