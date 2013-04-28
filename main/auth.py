@@ -13,9 +13,13 @@ from smartclip import backends
 from main.models import *
 
 
-def generate_api(request):
+def generate_api(request=None):
     # "ACCESS_TOKEN" is inserted into the session in Smartfile.authenticate.
-    token, secret = request.session.get('ACCESS_TOKEN', (None, None))
+    token, secret = None, None
+    
+    if request:
+        token, secret = request.session.get('ACCESS_TOKEN', (None, None))
+        
     return backends.Smartfile(client_token=secrets.OAUTH_TOKEN,
                               client_secret=secrets.OAUTH_SECRET,
                               access_token=token,

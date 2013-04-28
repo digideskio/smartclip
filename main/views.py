@@ -41,6 +41,8 @@ def get_chrome(request):
     
 @login_required
 def view_clippings(request):
+    import ipdb
+    ipdb.set_trace()
     clippings = Clipping.objects.filter(user=request.user)
     data = {'user': request.user, 'clippings': clippings}
     return render_to_response('view-clips.html', data,
