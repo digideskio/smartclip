@@ -1,52 +1,35 @@
 import os
 from cStringIO import StringIO
+from django.conf import settings
 from django.template.loader import get_template
 from django.template import Context
 from wkhtmltopdf.utils import wkhtmltopdf
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 
-from smartfile import OAuthClient
-from smartfile import APIError
-from smartclip.secrets import *
-from smartclip.settings import MEDIA_URL, MEDIA_ROOT
-
+import smartfile
+from smartclip import secrets
+from smartclip import backends
 from main.models import *
 
 
-
-def verify_user(access_token):
-    token = access_token[0]
-    secret = access_token[1]
-    api = OAuthClient(client_token=OAUTH_TOKEN, client_secret=OAUTH_SECRET,
-                      access_token=token, access_secret = secret)
-    try:
-        user_dict = api('/whoami')['user']
-        user, created = User.objects.get_or_create(username=user_dict['username'], 
-                                          first_name=user_dict['first_name'],
-                                          last_name=user_dict['last_name'])
-        if created:
-            create_smartfile_dirs(api)    
-        return user, created
-    except APIError:
-        return False
-
 def generate_api(request):
-    access_token = request.session.get('ACCESS_TOKEN')
-    token = access_token[0]
-    secret = access_token[1]
-    return OAuthClient(client_token=OAUTH_TOKEN, client_secret=OAUTH_SECRET,
-                      access_token=token, access_secret = secret)
-
+    # "ACCESS_TOKEN" is inserted into the session in Smartfile.authenticate.
+    token, secret = request.session.get('ACCESS_TOKEN', (None, None))
+    return backends.Smartfile(client_token=secrets.OAUTH_TOKEN,
+                              client_secret=secrets.OAUTH_SECRET,
+                              access_token=token,
+                              access_secret=secret)
     
 def create_smartfile_docs(request, clip_id):
     clip = Clipping.objects.get(id=clip_id)
-    base_path = MEDIA_URL + clip.filename
-
+    base_path = settings.MEDIA_URL + clip.filename
+    
     api = generate_api(request)
     create_smartfile_dirs(api)
-    api.post('/path/data/smartclip/html', file=(clip.filename+'.html',
-             StringIO(clip.html.encode('utf-8'))))
+    api.client.post('/path/data/smartclip/html',
+                    file=(clip.filename+'.html',
+                          StringIO(clip.html.encode('utf-8'))))
     
     html_file = open(base_path+'.html', 'w')
     html_file.write(clip.html.encode('ascii','xmlcharrefreplace'))
@@ -55,7 +38,8 @@ def create_smartfile_docs(request, clip_id):
     wkhtmltopdf(pages=[base_path+'.html'], output=base_path+'.pdf')
 
     with open(base_path+'.pdf') as f:
-        api.post('/path/data/smartclip/pdf', file=(clip.filename+'.pdf',f))
+        api.client.post('/path/data/smartclip/pdf',
+                        file=(clip.filename+'.pdf',f))
 
     if os.path.isfile(base_path+'.pdf'):
         os.remove(base_path+'.pdf')
@@ -64,24 +48,17 @@ def create_smartfile_docs(request, clip_id):
         os.remove(base_path+'.html')
 
 def create_smartfile_dirs(api):
-    try:
-        api.get('/path/info/smartclip')
-    except:
-        api.post('/path/oper/mkdir', path='/smartclip')
-    try:
-        api.get('/path/info/smartclip/html')
-    except:
-        api.post('/path/oper/mkdir', path='/smartclip/html')
-    try:
-        api.get('/path/info/smartclip/pdf')
-    except:
-        api.post('/path/oper/mkdir', path='/smartclip/pdf')
+    for path in ['smartclip', 'smartclip.html', 'smartclip.pdf']:
+        try:
+            api.client.get('/path/info/%s' % path)
+        except:
+            api.client.post('/path/oper/mkdir', path='/%s' % path)
     
 def create_link(api, filename, **kwargs):
     message = kwargs.get('message', None)
     recipients = kwargs.get('recipients', None)
     name = kwargs.get('title', None)
     
-    return api.post('/link', path='/smartclip/pdf/'+filename+'.pdf',
-             name=name, recipients=recipients, message=message,
-             read=True, list=True)
+    return api.client.post('/link', path='/smartclip/pdf/'+filename+'.pdf',
+                           name=name, recipients=recipients, message=message,
+                           read=True, list=True)

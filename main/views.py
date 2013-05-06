@@ -1,17 +1,19 @@
 from django.http import HttpResponseRedirect, HttpResponse
+from django.conf import settings
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
-from smartfile import OAuthClient
 
-from smartclip.secrets import *
-from smartclip.settings import MEDIA_URL, MEDIA_ROOT
+import smartfile
+from smartclip import secrets
+from smartclip import backends
 from main.models import User, Clipping
 from main.forms import ClippingForm, ShareForm
-from main.auth import verify_user, generate_api, create_smartfile_docs, create_smartfile_dirs, create_link
+from main.auth import (generate_api, create_smartfile_docs,
+                       create_smartfile_dirs, create_link)
 
 
 def home(request):
@@ -19,37 +21,20 @@ def home(request):
     return render_to_response('main.html',data,RequestContext(request))
 
 def oauth_redirect(request):
-    api = OAuthClient(OAUTH_TOKEN, OAUTH_SECRET)
-    token = api.get_request_token(callback=
-            request.build_absolute_uri(reverse('authenticate')))
-    request.session['REQUEST_TOKEN'] = token
-    return redirect(api.get_authorization_url(token))
+    api = generate_api(request)
+    callback = request.build_absolute_uri(reverse('authenticate'))
+    token = api.oauth_token(request, callback)
+    return redirect(api.authorize(token))
 
 def authenticate(request):
-    verifier = request.GET.get('verifier')
-    api = OAuthClient(OAUTH_TOKEN, OAUTH_SECRET)
+    api = generate_api(request)
+    user = api.authenticate(request)
+    dest = reverse('view_clippings')
+    if not user:
+        dest = reverse('home')
 
-    try:
-        request_token = request.session.get('REQUEST_TOKEN')
-    except:
-        return redirect(reverse('oauth_redirect'))
-    access_token = api.get_access_token(request_token, verifier=verifier)
-    request.session['ACCESS_TOKEN'] = access_token
-    return redirect(reverse('verify_login'))
-
-def verify_login(request):
-    try:
-        access_token = request.session.get('ACCESS_TOKEN')
-    except KeyError:
-        return redirect(reverse('home'))
-    user, created = verify_user(access_token)
-    if user:
-        user.backend = 'django.contrib.auth.backends.ModelBackend'
-        login(request, user)
-        return redirect(reverse('view_clippings'))
-    else:
-        return redirect(reverse('home'))
-
+    return redirect(dest)
+    
 @login_required
 def get_chrome(request):
     return HttpResponse('Get Chrome view')
@@ -89,10 +74,10 @@ def form_view(request,clip_id):
                 api = generate_api(request)
                 create_smartfile_dirs(api)
                 try:
-                    api.post('/path/oper/rename', src='/smartclip/pdf/'+prev_title+'.pdf',
-                             dst='/smartclip/pdf/'+title+'.pdf')
-                    api.post('/path/oper/rename', src='/smartclip/html/'+prev_title+'.html',
-                             dst='/smartclip/html/'+title+'.html')
+                    for ext in ['pdf', 'html']:
+                        src = '/smartclip/%s/%s.%s' % (ext, prev_title, ext)
+                        dst = '/smartclip/%s/%s.%s' % (ext, title, ext)
+                        api.client.post('/path/oper/rename', src=src, dst=dst)
                 except:
                     create_smartfile_docs(request, clip_id)
             return render_to_response('clip-listing.html', {'clippings': [clip_obj]},
@@ -118,7 +103,7 @@ def pdf_view(request):
     clip_id = request.GET.get('clip_id')
     clip_obj = Clipping.objects.get(id=clip_id)
     api = generate_api(request)
-    pdf = api.get('/path/data/smartclip/pdf', clip_obj.filename+'.pdf')
+    pdf = api.client.get('/path/data/smartclip/pdf', clip_obj.filename+'.pdf')
     response = HttpResponse(pdf.read(), mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename='+clip_obj.filename+'.pdf'
     return response    
@@ -140,10 +125,10 @@ def delete_clipping(request, clip_id):
     if clip:
         api = generate_api(request)
         try:
-            api.post('/path/oper/remove',
-                     path='/smartclip/pdf/'+clip.filename+'.pdf')
-            api.post('/path/oper/remove',
-                     path='/smartclip/html/'+clip.filename+'.html')
+            api.client.post('/path/oper/remove',
+                            path='/smartclip/pdf/'+clip.filename+'.pdf')
+            api.client.post('/path/oper/remove',
+                            path='/smartclip/html/'+clip.filename+'.html')
         except:
             pass
         clip.delete()
