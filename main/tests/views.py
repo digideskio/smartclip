@@ -1,15 +1,29 @@
+import string
+
+from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.test.client import Client
 
 from bs4 import BeautifulSoup
 from mock import patch
 
-from .factories import UserFactory, ClippingFactory
+from .factories import ClippingFactory
 from .testcase import SmartClipTestCase
+from .. import views
+
+dummy_oauth_token = string.letters[:30]
+dummy_oauth_secret = string.letters[:30:-1]
 
 def dummy_smartfile_docs(request, clip_id):
     return None
 
+
+def get_pdf(*args, **kwargs):
+    with open('/'.join([settings.PATH, 'main/tests/test.pdf'])) as f:
+        return HttpResponse(f)
+
+    
 class ViewsTests(SmartClipTestCase):
     def setUp(self):
         super(ViewsTests, self).setUp()
@@ -65,3 +79,17 @@ class ViewsTests(SmartClipTestCase):
                                data={'clip_id': self.clipping.id})
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.content, 'rendered documents')
+
+    def test_pdf_view(self):
+        self.client.login(username=self.user.username, password=self.pwd)
+        session = self.client.session
+        session['ACCESS_TOKEN'] = (string.letters[:30], string.letters[:30:-1])
+        session.save()
+        url = reverse(views.pdf_view)
+
+        with patch('smartclip.backends.smartfile_backend.SmartfileClient') as m:
+            client = m.return_value
+            client.get = get_pdf
+            resp = self.client.get(url, {'clip_id': self.clipping.id})
+            self.assertEqual(resp.status_code, 200)
+
