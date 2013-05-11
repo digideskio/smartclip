@@ -1,3 +1,4 @@
+import json
 from functools import partial
 
 from django.contrib.auth.models import User
@@ -79,4 +80,52 @@ class ClippingTest(ResourceTestCase):
         self.client.login(username=self.user.username, password=self.pwd)
         resp = self.client.get(url)
         self.assertEqual(resp.status_code, 200)
+
+        # Create a new Clipping instance owned by a user other than self.user.
+        # A GET for this resource should result in a 401.
+        clip = f.ClippingFactory()
+        user = clip.user
+        user.set_password(self.pwd)
+        user.save()
+
+        kwargs = self.resource_urls(clip.id)[url_name]
+        url = reverse(url_name, kwargs=kwargs)
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 401)
+
+        self.client.login(username=user.username, password=self.pwd)
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+
+    def test_create(self):
+        self.client.login(username=self.user.username, password=self.pwd)
+        url_name = 'api_dispatch_list'
+        kwargs = self.resource_urls()[url_name]
+        url = reverse(url_name, kwargs=kwargs)
+        payload = self._dumps(self._data())
+        resp = self.client.post(url, data=payload,
+                                content_type='application/json')
+        self.assertEqual(resp.status_code, 201)
+        content = json.loads(resp.content)
+        self.assertIn('title', content.keys())
+        
+    def _data(self, **kwargs):
+        data = {
+            'html': '<b>Some HTML</b>',
+            'title': 'My First Clipping!',
+            'filename': 'my-first-clipping',
+            'user': self.user
+        }
+
+        for k, v in kwargs.items():
+            data[k] = v
+
+        return data
+
+    def _dumps(self, data):
+        data = data.copy()
+        url_name = 'api_dispatch_detail'
+        kwargs = self.resource_urls(self.user.id)[url_name]
+        data['user'] = reverse(url_name, kwargs=kwargs)
+        return json.dumps(data)
         
