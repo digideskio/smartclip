@@ -14,7 +14,7 @@ from main.models import User, Clipping
 from main.forms import ClippingForm, ShareForm
 from main.auth import (generate_api, create_smartfile_docs,
                        create_smartfile_dirs, create_link)
-
+from . import auth
 
 def home(request):
     data = {'user': request.user}
@@ -52,7 +52,7 @@ def html_view(request):
 @login_required
 def render_documents(request):
     clip_id = request.GET.get('clip_id')
-    create_smartfile_docs(request, clip_id)
+    auth.create_smartfile_docs(request, clip_id)
         
     return HttpResponse('rendered documents')
 
