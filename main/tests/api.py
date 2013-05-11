@@ -39,10 +39,6 @@ class ResourceTestCase(SmartclipTestCase):
                 'resource_name': resource_name,
                 'api_name': self.api_name
             },
-            'user_login': {
-                'resource_name': resource_name,
-                'api_name': self.api_name
-            },
             'api_get_multiple': {
                 'resource_name': resource_name,
                 # 'resource_id' must be a semicolon-separated string of object
