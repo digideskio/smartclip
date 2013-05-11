@@ -3,10 +3,8 @@ from django.test import TestCase
 from .factories import UserFactory
 
 
-class SmartclipTestCase(TestCase):
+class SmartClipTestCase(TestCase):
     def setUp(self):
-        super(SmartclipTestCase, self).setUp()
+        super(SmartClipTestCase, self).setUp()
         self.pwd = 'password'
-        self.user = UserFactory.build()
-        self.user.set_password(self.pwd)
-        self.user.save()
+        self.user = UserFactory(password=self.pwd)

@@ -8,7 +8,6 @@ from taggit.models import Tag
 
 from ..models import Clipping
 
-
 def _user_attributes():
     user_count = random.randint(1, 1000)
     attrs = {
@@ -17,7 +16,6 @@ def _user_attributes():
     }
     return attrs
     
-
 class UserFactory(factory.DjangoModelFactory):
     FACTORY_FOR = User
 
@@ -26,13 +24,16 @@ class UserFactory(factory.DjangoModelFactory):
     first_name = 'Test'
     last_name = 'User'
 
+    @classmethod
+    def _prepare(cls, create, **kwargs):
+        password = kwargs.pop('password', None)
+        user = super(UserFactory, cls)._prepare(create, **kwargs)
+        if password:
+            user.set_password(password)
+            if create:
+                user.save()
+        return user
 
-class TagFactory(factory.DjangoModelFactory):
-    FACTORY_FOR = Tag
-
-    name = 'Test Tag'
-    slug = 'test-tag'
-    
 
 class ClippingFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Clipping
@@ -43,4 +44,3 @@ class ClippingFactory(factory.DjangoModelFactory):
     source_url = 'http://google.com'
     text_only = False
     user = factory.SubFactory(UserFactory, **_user_attributes())
-

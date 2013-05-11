@@ -7,11 +7,11 @@ from django.core.urlresolvers import reverse
 from tastypie.resources import ModelResource
 
 from . import factories as f
-from .testcase import SmartclipTestCase
+from .testcase import SmartClipTestCase
 from .. import api
 
 
-class ResourceTestCase(SmartclipTestCase):
+class ResourceTestCase(SmartClipTestCase):
     def setUp(self):
         super(ResourceTestCase, self).setUp()
         self.api_name = 'v1'
