@@ -34,11 +34,7 @@ def authenticate(request):
         dest = reverse('home')
 
     return redirect(dest)
-    
-@login_required
-def get_chrome(request):
-    return HttpResponse('Get Chrome view')
-    
+
 @login_required
 def view_clippings(request):
     clippings = Clipping.objects.filter(user=request.user)
