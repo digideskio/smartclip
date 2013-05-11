@@ -1,0 +1,82 @@
+from functools import partial
+
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+
+from tastypie.resources import ModelResource
+
+from . import factories as f
+from .testcase import SmartclipTestCase
+from .. import api
+
+
+class ResourceTestCase(SmartclipTestCase):
+    def setUp(self):
+        super(ResourceTestCase, self).setUp()
+        self.api_name = 'v1'
+        self.resource = ModelResource
+        
+    def resource_urls(self, resource_id=None, detail_uri_name='pk',
+                      **kwargs):
+        """
+        Return a dictionary of named URLs included in Tastypie by default.
+        These can be found in tastypie.resources.Resource.base_urls. They
+        are included here as a convenience and a form of documentation.
+
+        By using this method we can use reverse URL resolution and
+        automatically have all of the kwargs needed by
+        django.core.urlresolvers.reverse to return the URL string.
+
+        """
+        resource_name = self.resource._meta.resource_name
+        return {
+            'api_dispatch_list': {
+                'resource_name': resource_name,
+                'api_name': self.api_name
+            },
+            'api_get_schema': {
+                'resource_name': resource_name,
+                'api_name': self.api_name
+            },
+            'user_login': {
+                'resource_name': resource_name,
+                'api_name': self.api_name
+            },
+            'api_get_multiple': {
+                'resource_name': resource_name,
+                # 'resource_id' must be a semicolon-separated string of object
+                # primary keys, e.g. '1;2;3;4'. Best way to get this would be
+                # like so:
+
+                # ids = Section.objects.all().values_list('id', flat=True)
+                # ids = ';'.join(ids)
+
+                # You'd then pass these in as the argument to resource_id.
+                '%s_list' % detail_uri_name: resource_id,
+                'api_name': self.api_name
+            },
+            'api_dispatch_detail': {
+                'resource_name': resource_name,
+                detail_uri_name: resource_id,
+                'api_name': self.api_name
+            }
+        }
+    
+    
+class ClippingTest(ResourceTestCase):
+    def setUp(self):
+        super(ClippingTest, self).setUp()
+        self.resource = api.ClippingResource
+        self.clipping = f.ClippingFactory(user=self.user)
+        
+    def test_get_detail(self):
+        url_name = 'api_dispatch_detail'
+        kwargs = self.resource_urls(self.clipping.id)[url_name]
+        url = reverse(url_name, kwargs=kwargs)
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 401)
+
+        self.client.login(username=self.user.username, password=self.pwd)
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        
