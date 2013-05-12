@@ -49,9 +49,8 @@ def create_smartfile_docs(request, clip_id):
 
 def create_smartfile_dirs(api):
     for path in ['smartclip', 'smartclip.html', 'smartclip.pdf']:
-        try:
-            api.client.get('/path/info/%s' % path)
-        except:
+        response = api.client.get('/path/info/%s' % path)
+        if response.status_code >= 399:
             api.client.post('/path/oper/mkdir', path='/%s' % path)
     
 def create_link(api, filename, **kwargs):

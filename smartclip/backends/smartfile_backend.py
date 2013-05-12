@@ -20,7 +20,13 @@ class SmartfileClient(smartfile.OAuthClient):
                                 resource_owner_secret=self._access.secret,
                                 signature_method=smartfile.SIGNATURE_PLAINTEXT)
         response = request(url, stream=True, **kwargs)
-        return HttpResponse(response.content, status=response.status_code)
+
+        if response.headers.get('content-type') == 'application/json':
+            body = response.text
+        else:
+            body = response.raw
+            
+        return HttpResponse(body, status=response.status_code)
             
     
 class Smartfile(object):

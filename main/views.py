@@ -10,10 +10,10 @@ from django.template import RequestContext
 import smartfile
 from smartclip import secrets
 from smartclip import backends
-from main.models import User, Clipping
-from main.forms import ClippingForm, ShareForm
-from main.auth import (generate_api, create_smartfile_docs,
-                       create_smartfile_dirs, create_link)
+from .models import User, Clipping
+from .forms import ClippingForm, ShareForm
+from .auth import (generate_api, create_smartfile_docs,
+                   create_smartfile_dirs, create_link)
 from . import auth
 
 def home(request):
@@ -98,10 +98,11 @@ def sort_clips(request):
 def pdf_view(request):
     clip_id = request.GET.get('clip_id')
     clip_obj = Clipping.objects.get(id=clip_id)
-    api = generate_api(request)
-    pdf = api.client.get('/path/data/smartclip/pdf', clip_obj.filename+'.pdf')
-    response = HttpResponse(pdf.read(), mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename='+clip_obj.filename+'.pdf'
+    filename = clip_obj.filename + '.pdf'
+    api = auth.generate_api(request)
+    response = api.client.get('/path/data/smartclip/pdf', filename)
+    response.mimetype = 'application/pdf'
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
     return response    
 
 def logout_user(request):
