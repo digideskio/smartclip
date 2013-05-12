@@ -20,93 +20,93 @@
   <body>
     <div id="header">
       <div id="logo">
-	<a href="/"><img src="{{STATIC_URL}}img/logo.png" /></a>
+	    <a href="/"><img src="{{STATIC_URL}}img/logo.png" /></a>
       </div>
       <div id="header_info">
-	<div id="header_info_img">
-	  <img src="{{STATIC_URL}}img/profile_img.png" />
-	</div>
-	<div id="header_info_name">
-	   Logged in as: <b>{{ user.username }}</b>
-	   <br><a href="/logout">Logout</a></br>
-	</div>
+	    <div id="header_info_img">
+	      <img src="{{STATIC_URL}}img/profile_img.png" />
+	    </div>
+	    <div id="header_info_name">
+	      Logged in as: <b>{{ user.username }}</b>
+	      <br><a href="/logout">Logout</a></br>
+	    </div>
       </div>
       <div id="nav_menu">
-	<ul>
-	  <li class="start">
-	    <a href="/">
-	      <span class="icon-home icon-white"></span> Home
-	    </a>
-	  </li>
-	  <li class="active">
-	    <a href="/clippings">
-	      <span class="icon-picture icon-white"></span> Clippings 
-	    </a>
-	  </li>
-	  <li>
-	    <a href="https://app.smartfile.com/ftp/private/browse/#path=/smartclip" target="_blank">
-	      <span class="icon-leaf icon-white"></span> View On SmartFile
-	    </a>
-	  </li>
-	  <li>
-	    <a href="https://chrome.google.com/webstore/detail/smartclip/dfinnoojjhjeehmahanjjbcdjpdmepge" target="_blank">
-	      <img src="{{STATIC_URL}}img/chrome.png" class="icon-chrome">Get the Chrome Extension
-	    </a>
-	  </li>
-	</ul>
+	    <ul>
+	      <li class="start">
+	        <a href="/">
+	          <span class="icon-home icon-white"></span> Home
+	        </a>
+	      </li>
+	      <li class="active">
+	        <a href="/clippings">
+	          <span class="icon-picture icon-white"></span> Clippings 
+	        </a>
+	      </li>
+	      <li>
+	        <a href="https://app.smartfile.com/ftp/private/browse/#path=/smartclip" target="_blank">
+	          <span class="icon-leaf icon-white"></span> View On SmartFile
+	        </a>
+	      </li>
+	      <li>
+	        <a href="https://chrome.google.com/webstore/detail/smartclip/dfinnoojjhjeehmahanjjbcdjpdmepge" target="_blank">
+	          <img src="{{STATIC_URL}}img/chrome.png" class="icon-chrome">Get the Chrome Extension
+	        </a>
+	      </li>
+	    </ul>
       </div>
     </div>
     
     <div id="container" class="clip_view">
 
       <div class="clipping_content">
-	
-	<div class="panel_left">
-	  <div class="page_header_bg">
-	    <h3>Your Clippings</h3>
-	    <div class="btn-group">
-	      <button class ="btn primary dropdown-toggle" data-toggle="dropdown">
-		Sort By
-		<span class="caret"></span>
-	      </button>
-	      <ul class="dropdown-menu pull-right">
-		<li><a href="#" id="sortby-newest">Newest</a></li>
-		<li><a href="#" id="sortby-oldest">Oldest</a></li>
-		<li><a href="#" id="sortby-title">Title</a></li>
-	      </ul>
-	    </div>
-	  </div>
-	  <div class="statuses">
-	  </div>
-    <div id="myModal" class="modal hide fade in" style="display:none;">
-      <div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-	<h4 id="myModalLabel">Email this Clipping</h4>
-      </div>
+	    
+	    <div class="panel_left">
+	      <div class="page_header_bg">
+	        <h3>Your Clippings</h3>
+	        <div class="btn-group">
+	          <button class ="btn primary dropdown-toggle" data-toggle="dropdown">
+		        Sort By
+		        <span class="caret"></span>
+	          </button>
+	          <ul class="dropdown-menu pull-right">
+		        <li><a href="#" id="sortby-newest">Newest</a></li>
+		        <li><a href="#" id="sortby-oldest">Oldest</a></li>
+		        <li><a href="#" id="sortby-title">Title</a></li>
+	          </ul>
+	        </div>
+	      </div>
+	      <div class="statuses">
+	      </div>
+          <div id="myModal" class="modal hide fade in" style="display:none;">
+            <div class="modal-header">
+	          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	          <h4 id="myModalLabel">Email this Clipping</h4>
+            </div>
 
-      <div class="modal-body modal-sc">
-      </div>
+            <div class="modal-body modal-sc">
+            </div>
 
-    </div>
-	  <div class="clip_list">
-	    {% if clippings %}
-	    <ul>
-	    {% include "clip-listing.html" %}
-	    </ul>
-	    {% else %}
-	    <p class="muted"><italic>You have no clippings yet! Why don't you give the chrome extension a whirl?</italic></p>
-	    {% endif %}
-	  </div>
-	</div> <!-- end panel_left -->
-	
-	<div class="panel_right">
-	  <div class="clip_preview">
-	    <div class="clip_preview_content" style="clear:both;">
-	      <iframe id="clip_preview_frame" src="">
-	    </div>
-	  </div>
-	</div> <!-- end panel_right -->
-	
+          </div>
+	      <div class="clip_list">
+	        {% if clippings %}
+	        <ul>
+	          {% include "clip-listing.html" %}
+	        </ul>
+	        {% else %}
+	        <p class="muted"><italic>You have no clippings yet! Why don't you give the chrome extension a whirl?</italic></p>
+	        {% endif %}
+	      </div>
+	    </div> <!-- end panel_left -->
+	    
+	    <div class="panel_right">
+	      <div class="clip_preview">
+	        <div class="clip_preview_content" style="clear:both;">
+	          <iframe id="clip_preview_frame" src="">
+	        </div>
+	      </div>
+	    </div> <!-- end panel_right -->
+	    
       </div> <!-- end inner_container -->
     </div> <!-- end container -->
     
