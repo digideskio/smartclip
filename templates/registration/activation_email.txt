@@ -1,0 +1,5 @@
+Click or copy and past the URL below to complete your registration:
+
+http://smartclip.me/accounts/activate/{{ activation_key }}/
+
+You'll have {{ expiration_days }} days to complete this, at which point you'll have to re-register.

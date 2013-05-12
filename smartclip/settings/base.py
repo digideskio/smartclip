@@ -109,6 +109,7 @@ INSTALLED_APPS = (
     'taggit',
     'tastypie',
     'wkhtmltopdf',
+    'registration',
     'south',
 )
 
@@ -172,4 +173,6 @@ INSTALLED_APPS = (
         
 # }
 
+# django-registration
+ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_URL = "/oauth-redirect"

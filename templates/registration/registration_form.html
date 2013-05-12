@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+{% block header %}
+{% endblock header}
+
+{% block body %}
+<form action="." method="POST" class="span8">
+    {% csrf_token %}
+    <table class="table table-bordered table-condensed">
+        {% for field in form.visible_fields %}
+        {% if field.errors %}
+        <tr class="error">
+            <td>
+                <ul class="unstyled pull-right">
+                    {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        <tr>
+        {% endif %}
+        <tr>
+            <td>{{ field.label_tag }}</td>
+            <td>{{ field }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <input type="submit" value="Submit" />
+</form>
+{% endblock %}
+
+{% block footer %}
+{% endblock footer}
