@@ -22,10 +22,7 @@ class SmartfileClient(smartfile.OAuthClient):
         response = request(url, stream=True, **kwargs)
 
         if response.headers.get('content-type') == 'application/json':
-            try:
-                body = response.json()
-            except ValueError:
-                body = response.text
+            body = response.text
         else:
             body = response.raw
             
