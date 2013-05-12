@@ -12,8 +12,6 @@ from .factories import ClippingFactory
 from .testcase import SmartClipTestCase
 from .. import views
 
-dummy_oauth_token = string.letters[:30]
-dummy_oauth_secret = string.letters[:30:-1]
 
 def dummy_smartfile_docs(request, clip_id):
     return None
@@ -82,9 +80,6 @@ class ViewsTests(SmartClipTestCase):
 
     def test_pdf_view(self):
         self.client.login(username=self.user.username, password=self.pwd)
-        session = self.client.session
-        session['ACCESS_TOKEN'] = (string.letters[:30], string.letters[:30:-1])
-        session.save()
         url = reverse(views.pdf_view)
 
         with patch('smartclip.backends.smartfile_backend.SmartfileClient') as m:
