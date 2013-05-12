@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
+from django.utils import simplejson
 
 import smartfile
 from smartclip import secrets
@@ -118,8 +119,8 @@ def check_user(request):
 
 @login_required
 def delete_clipping(request, clip_id):
-    clip = Clipping.objects.get(user=request.user, id=clip_id)
-    if clip:
+    try:
+        clip = Clipping.objects.get(user=request.user, id=clip_id)
         api = generate_api(request)
         try:
             api.client.post('/path/oper/remove',
@@ -130,19 +131,20 @@ def delete_clipping(request, clip_id):
             pass
         clip.delete()
         return HttpResponse('deleted')
-    else:
+    except Clipping.DoesNotExist:
         return HttpResponse('not authorized')
 
 @login_required
 def share_form(request, clip_id):
-    clip = Clipping.objects.get(user=request.user, id=clip_id)
-    if clip:
+    try:
+        clip = Clipping.objects.get(user=request.user, id=clip_id)
         if request.method == "POST":
             form = ShareForm(request.POST)
             if form.is_valid():
                 api = generate_api(request)
                 resp = create_link(api, clip.filename, **form.cleaned_data)
-                if resp.get('href', None):
+                resp_content = simplejson.loads(resp.content)
+                if resp_content.get('href', None):
                     return HttpResponse('success')
                 else:
                     return HttpResponse('failure')
@@ -155,5 +157,5 @@ def share_form(request, clip_id):
             return render_to_response('share-form.html',
                                   {'form':form, 'clip_id': clip_id},
                                   RequestContext(request))
-    else:
-        HttpResponse('not authorized')
+    except Clipping.DoesNotExist:
+        return HttpResponse('not authorized')
