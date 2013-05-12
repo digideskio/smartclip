@@ -28,7 +28,7 @@ class Clipping(models.Model):
         self.filename = slugify(self.title)[0:25]
 
         date = datetime.datetime.now()
-        format = '%Y-%m-%dT%H-%M-%S'
+        format = '%Y-%m-%dT%H-%M-%f'
         self.filename = self.filename + "_" + date.strftime(format)
 
         super(Clipping, self).save(*args, **kwargs)
