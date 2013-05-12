@@ -1,20 +1,15 @@
-from django.http import HttpResponseRedirect, HttpResponse
-from django.conf import settings
-from django.contrib.auth import login, logout
+from django.http import HttpResponse
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.forms.models import model_to_dict
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
-import smartfile
-from smartclip import secrets
-from smartclip import backends
-from .models import User, Clipping
+from . import auth
+from .models import Clipping
 from .forms import ClippingForm, ShareForm
 from .auth import (generate_api, create_smartfile_docs,
                    create_smartfile_dirs, create_link)
-from . import auth
 
 def home(request):
     data = {'user': request.user}
