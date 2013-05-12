@@ -1,12 +1,14 @@
 import random
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.template.defaultfilters import slugify
 
 import factory
 from taggit.models import Tag
 
 from ..models import Clipping
+
+User = get_user_model()
 
 def _user_attributes():
     user_count = random.randint(1, 1000)

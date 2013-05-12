@@ -5,7 +5,6 @@ from django.template.loader import get_template
 from django.template import Context
 from wkhtmltopdf.utils import wkhtmltopdf
 from django.contrib.auth import login
-from django.contrib.auth.models import User
 
 import smartfile
 from smartclip import secrets

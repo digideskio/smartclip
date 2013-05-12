@@ -1,5 +1,5 @@
 import datetime
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 from django.template.defaultfilters import slugify
 
@@ -7,7 +7,7 @@ from taggit.managers import TaggableManager
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)    
+    user = models.OneToOneField(settings.AUTH_USER_MODEL)    
 
 
 class Clipping(models.Model):
@@ -19,7 +19,7 @@ class Clipping(models.Model):
     text_only = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True, editable=False)
     date_modified = models.DateTimeField(auto_now=True, editable=False)
-    user = models.ForeignKey(User, editable=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, editable=False)
 
     class Meta:
         ordering = ['-date_modified']

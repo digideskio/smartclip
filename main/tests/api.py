@@ -1,7 +1,7 @@
 import json
 from functools import partial
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
 from tastypie.resources import ModelResource
@@ -9,6 +9,8 @@ from tastypie.resources import ModelResource
 from . import factories as f
 from .testcase import SmartClipTestCase
 from .. import api
+
+User = get_user_model()
 
 
 class ResourceTestCase(SmartClipTestCase):

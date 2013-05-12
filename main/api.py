@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from tastypie import fields
 from tastypie.resources import ModelResource
@@ -6,6 +6,8 @@ from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from taggit.models import Tag
 from main.models import Clipping
+
+User = get_user_model()
 
 
 class CustomAuthentication(BasicAuthentication):

@@ -1,13 +1,15 @@
 import json
 
 from django.contrib import auth
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.utils.decorators import available_attrs
 
 import smartfile
 from requests_oauthlib import OAuth1
 from smartclip import secrets
+
+User = get_user_model()
 
 
 class SmartfileClient(smartfile.OAuthClient):
