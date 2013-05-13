@@ -2,10 +2,10 @@ Django==1.5.1
 South==0.7.6
 argparse==1.2.1
 dj-database-url==0.2.1
-git+https://github.com/toastdriven/django-haystack.git@master#egg=django-haystack
-lib/django-registration-0.9b1.tar.gz
+django-haystack==2.0.0
+git+https://github.com/mattdeboard/django-registration.git@master#egg=django-registration
 django-taggit==0.10a1
-django-tastypie==0.9.14
+django-tastypie==0.9.15
 django-wkhtmltopdf==1.2
 ipdb==0.7
 ipython==0.13.1
