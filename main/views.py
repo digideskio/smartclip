@@ -103,8 +103,9 @@ def pdf_view(request):
 
 def logout_user(request):
     logout(request)
-    data = {'logged_out': True }
-    return render_to_response('main.html', data, RequestContext(request))
+    data = {'logged_out': True, 'login_url': settings.LOGIN_URL}
+    return redirect('home')
+    #return render_to_response('main.html', data, RequestContext(request))
 
 def check_user(request):
     if request.user.is_authenticated():
