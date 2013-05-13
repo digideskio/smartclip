@@ -1,7 +1,8 @@
-from django.http import HttpResponse
+from django.conf import settings
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
@@ -12,7 +13,7 @@ from .auth import (generate_api, create_smartfile_docs,
                    create_smartfile_dirs, create_link)
 
 def home(request):
-    data = {'user': request.user}
+    data = {'user': request.user, 'login_url': settings.LOGIN_URL}
     return render_to_response('main.html',data,RequestContext(request))
 
 def oauth_redirect(request):
