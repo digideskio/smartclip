@@ -1,8 +1,10 @@
 {% extends "main.html" %}
 {% load url from future %}
 
-{% block body %}
+{% block header %}
+{% endblock %}
 
+{% block body %}
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
