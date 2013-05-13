@@ -26,4 +26,8 @@ urlpatterns = patterns('main.views',
     (r'^api/', include(v1_api.urls))
 )
 
+urlpatterns += patterns('',
+    url(r'^accounts/', include('registration.backends.default.urls')),
+)
+
 urlpatterns += static(MEDIA_URL, document_root=MEDIA_ROOT)

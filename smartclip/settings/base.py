@@ -175,4 +175,14 @@ INSTALLED_APPS = (
 
 # django-registration
 ACCOUNT_ACTIVATION_DAYS = 7
-LOGIN_URL = "/oauth-redirect"
+#LOGIN_URL = "/oauth-redirect"
+
+from .. import secrets
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'smartclip.me@gmail.com'
+EMAIL_HOST_PASSWORD = secrets.SMTP_PASSWORD
+EMAIL_USE_SSL = False
+EMAIL_USE_TLS = True
+DEFAULT_EMAIL_USER = EMAIL_HOST_USER
