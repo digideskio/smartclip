@@ -125,8 +125,7 @@ class ViewsTests(SmartClipTestCase):
             someone_elses_clip = ClippingFactory()
             resp = self.client.get(reverse('delete_clipping',
                                            kwargs={'clip_id': someone_elses_clip.id}))
-            self.assertEqual(resp.status_code, 200)
-            self.assertEqual(resp.content, 'not authorized')
+            self.assertEqual(resp.status_code, 403)
             
             clip_to_delete = ClippingFactory(user=self.user)
             resp = self.client.get(reverse('delete_clipping',

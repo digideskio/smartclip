@@ -1,10 +1,10 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.conf import settings
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from django.utils import simplejson
 
@@ -119,20 +119,18 @@ def check_user(request):
 
 @login_required
 def delete_clipping(request, clip_id):
-    try:
-        clip = Clipping.objects.get(user=request.user, id=clip_id)
-        api = generate_api(request)
-        try:
-            api.client.post('/path/oper/remove',
-                            path='/smartclip/pdf/'+clip.filename+'.pdf')
-            api.client.post('/path/oper/remove',
-                            path='/smartclip/html/'+clip.filename+'.html')
-        except:
-            pass
-        clip.delete()
-        return HttpResponse('deleted')
-    except Clipping.DoesNotExist:
-        return HttpResponse('not authorized')
+    clip = get_object_or_404(Clipping, id=clip_id)
+    if clip.user != request.user:
+        return HttpResponseForbidden()
+
+    api = generate_api(request)
+    for ext in ['pdf', 'html']:
+        filename = '.'.join([clip.filename, ext])
+        path = '/smartclip/%s/%s' % (ext, filename)
+        api.client.post('/path/oper/remove', path=path)
+
+    clip.delete()
+    return HttpResponse('deleted')    
 
 @login_required
 def share_form(request, clip_id):
