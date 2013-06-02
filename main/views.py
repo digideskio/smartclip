@@ -1,11 +1,12 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.conf import settings
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
+from django.utils import simplejson
 
 import smartfile
 from smartclip import secrets
@@ -118,31 +119,30 @@ def check_user(request):
 
 @login_required
 def delete_clipping(request, clip_id):
-    clip = Clipping.objects.get(user=request.user, id=clip_id)
-    if clip:
-        api = generate_api(request)
-        try:
-            api.client.post('/path/oper/remove',
-                            path='/smartclip/pdf/'+clip.filename+'.pdf')
-            api.client.post('/path/oper/remove',
-                            path='/smartclip/html/'+clip.filename+'.html')
-        except:
-            pass
-        clip.delete()
-        return HttpResponse('deleted')
-    else:
-        return HttpResponse('not authorized')
+    clip = get_object_or_404(Clipping, id=clip_id)
+    if clip.user != request.user:
+        return HttpResponseForbidden()
+
+    api = generate_api(request)
+    for ext in ['pdf', 'html']:
+        filename = '.'.join([clip.filename, ext])
+        path = '/smartclip/%s/%s' % (ext, filename)
+        api.client.post('/path/oper/remove', path=path)
+
+    clip.delete()
+    return HttpResponse('deleted')    
 
 @login_required
 def share_form(request, clip_id):
-    clip = Clipping.objects.get(user=request.user, id=clip_id)
-    if clip:
+    try:
+        clip = Clipping.objects.get(user=request.user, id=clip_id)
         if request.method == "POST":
             form = ShareForm(request.POST)
             if form.is_valid():
                 api = generate_api(request)
                 resp = create_link(api, clip.filename, **form.cleaned_data)
-                if resp.get('href', None):
+                resp_content = simplejson.loads(resp.content)
+                if resp_content.get('href', None):
                     return HttpResponse('success')
                 else:
                     return HttpResponse('failure')
@@ -155,5 +155,5 @@ def share_form(request, clip_id):
             return render_to_response('share-form.html',
                                   {'form':form, 'clip_id': clip_id},
                                   RequestContext(request))
-    else:
-        HttpResponse('not authorized')
+    except Clipping.DoesNotExist:
+        return HttpResponse('not authorized')
